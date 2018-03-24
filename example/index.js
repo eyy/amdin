@@ -20,9 +20,9 @@ app.use(admin({
   title: 'Amdin Example'
 }))
 
-// app.use(ctx => {
-//   ctx.redirect('/admin/')
-// })
+app.use(ctx => {
+  ctx.redirect('/admin/')
+})
 
 app.listen(3000, () => {
   console.log('running on http://localhost:' + 3000)
