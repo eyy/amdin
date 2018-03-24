@@ -34,7 +34,7 @@ api.get('/:model', async ctx => {
   ctx.body = docs
 })
 
-api.get('/:model/schema', ctx => {
+api.get('/:model/options', ctx => {
   ctx.body = ctx.Model.amdin
 })
 

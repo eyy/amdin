@@ -24,9 +24,14 @@ module.exports = function setModelOptions () {
       opts.label = opts.label || _.capitalize(name)
       opts.title = opts.title || paths.name ? 'name' : 'title'
       opts.paths = getPaths(paths)
+      opts.list = getListPaths(paths)
 
-      // debug(name, 'options init', opts)
+      debug(name, 'options init')
     }
+}
+
+function getListPaths (paths) {
+  return Object.keys(paths).filter(n => !n.startsWith('_'))
 }
 
 function getPaths (paths) {
@@ -36,6 +41,7 @@ function getPaths (paths) {
 
     let opts = path.options
     opts.type = path.instance
+    opts.label = opts.label || _.capitalize(name)
 
     acc[name] = opts
     return acc

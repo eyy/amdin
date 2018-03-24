@@ -24,8 +24,8 @@ export const listModels = function () {
   return go()
 }
 
-export const getSchema = function (model) {
-  return go(model + '/schema')
+export const getOptions = function (model) {
+  return go(model + '/options')
 }
 
 export function getDocs (model) {

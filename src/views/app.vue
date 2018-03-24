@@ -49,4 +49,21 @@ a
 
 .error
   color $red
+
+button
+  font-size .8em
+  margin-right .5em
+  padding .3em 1em
+  background $blue
+  color white
+  border 0
+  border-radius 3px
+  cursor pointer
+  &:hover
+    background $dark_blue
+  &.danger
+    background $red
+    &:hover
+      background $dark_red
+
 </style>
