@@ -1,5 +1,6 @@
 const Koa = require('koa'),
   logger = require('koa-logger'),
+  cors = require('@koa/cors'),
   mongoose = require('mongoose'),
   admin = require('../server')
 
@@ -12,6 +13,9 @@ mongoose.connect('mongodb://localhost/amdin')
 
 const app = new Koa
 
+app.use(cors({
+  origin: 'http://localhost:8080'
+}))
 app.use(logger())
 
 // here you go
