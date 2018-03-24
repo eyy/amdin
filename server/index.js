@@ -2,9 +2,11 @@ const Koa = require('koa'),
   serve = require('koa-static'),
   error = require('koa-json-error'),
   mount = require('koa-mount'),
-  routes = require('./routes')
+  routes = require('./routes'),
+  setModelOptions = require('./options')
 
 module.exports = function init (options) {
+  setModelOptions()
   app.context.amdin = options
   return mount('/admin', app)
 }
