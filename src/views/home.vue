@@ -9,17 +9,14 @@
 </template>
 
 <script>
-// import { listModels } from '../rest'
+import { listModels } from '../rest'
 
 export default {
   data: () => ({
-    models: [
-      { name: 'author', label: 'Author' },
-      { name: 'book', label: 'Book' }
-    ]
-  })
-  // async created () {
-  //   this.models = await listModels()
-  // }
+    models: []
+  }),
+  async created () {
+    this.models = await listModels()
+  }
 }
 </script>

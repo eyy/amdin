@@ -5,6 +5,15 @@ const _ = require('lodash'),
 
 // init model options
 
+/*
+  Model.amdin = {
+    list: Array,
+    listFn: () => Promise,
+    label: String,
+    title: String
+  }
+ */
+
 module.exports = function setModelOptions () {
   for (let name in models)
     if (models.hasOwnProperty(name)) {
