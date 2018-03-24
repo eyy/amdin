@@ -31,11 +31,14 @@ $red = #c7324b
 $dark_red = #972551
 
 html
+  padding 2em
+
+html, input, select, textarea
   font-family Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
   color #2d2d45
-  padding 2em
+  font-size 1em
 
 h1, h2, h3
   margin 0 0 1em

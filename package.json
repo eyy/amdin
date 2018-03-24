@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "DEBUG=amdin node example/index",
-    "serve": "vue-cli-service serve --open",
+    "start": "npm run koa & npm run vue",
+    "koa": "DEBUG=amdin node example/index",
+    "vue": "vue-cli-service serve --open",
     "build": "NODE_ENV=production vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -49,7 +50,8 @@
       "one-var": 0,
       "new-parens": 0,
       "curly": 0,
-      "eol-last": 0
+      "eol-last": 0,
+      "yoda": 0
     }
   },
   "eslintIgnore": [

@@ -39,9 +39,12 @@ function getPaths (paths) {
     if (name.startsWith('_'))
       return acc
 
-    let opts = path.options
+    let opts = _.extend({}, path.options)
     opts.type = path.instance
     opts.label = opts.label || _.capitalize(name)
+
+    if (path.$isMongooseArray)
+      opts.schema = getPaths(path.schema.paths)
 
     acc[name] = opts
     return acc

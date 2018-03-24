@@ -1,5 +1,5 @@
 import Vue from 'vue'
-// import { memoize } from 'lodash'
+import { memoize } from 'lodash'
 
 export const root = process.env.NODE_ENV === 'development'
   ? 'http://localhost:3000' + process.env.BASE_URL + 'api/'
@@ -20,13 +20,13 @@ function go (path = '', opts = {}) {
     })
 }
 
-export const listModels = function () {
+export const listModels = memoize(function () {
   return go()
-}
+})
 
-export const getOptions = function (model) {
+export const getOptions = memoize(function (model) {
   return go(model + '/options')
-}
+})
 
 export function getDocs (model) {
   return go(model)
