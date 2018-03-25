@@ -3,19 +3,19 @@
     <h2>
       <router-link to="/">Admin</router-link>
       / <router-link :to="'/' + model">{{ opts.label }}</router-link>
-      / <em>{{ doc[opts.title] }}</em>
+      / New
     </h2>
 
     <a-form
       :paths="opts.paths"
       :doc="doc"
-      @submit="doc => save(doc)"
+      @submit="save()"
     />
   </div>
 </template>
 
 <script>
-import { getOptions, getDoc, putDoc } from '../rest'
+import { getOptions, postDoc } from '../rest'
 import form from '../components/form'
 
 export default {
@@ -28,14 +28,11 @@ export default {
   }),
   async created () {
     this.model = this.$route.params.model
-    this.id = this.$route.params.id
-
     this.opts = await getOptions(this.model)
-    this.doc = await getDoc(this.model, this.id)
   },
   methods: {
-    async save (doc) {
-      let res = await putDoc(this.model, this.id, doc)
+    async save () {
+      let res = await postDoc(this.model, this.doc)
       console.log(res)
     }
   }

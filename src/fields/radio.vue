@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label v-for="opt in paths.enum">
+    <label v-for="opt in paths.enum" :key="opt">
       <input
         type="radio"
         name="paths"

@@ -8,8 +8,6 @@
       <obj
         :paths="paths.schema"
         :value="value[index]"
-        @input="val => { set(index, val) }"
-        @change="$emit('input', value)"
       />
     </div>
   </div>
@@ -22,17 +20,11 @@ export default {
     paths: Object
   },
   methods: {
-    set (index, val) {
-      this.value[index] = val
-      this.$emit('input', this.value)
-    },
     add () {
       this.value.push({})
-      this.$emit('input', this.value)
     },
     remove (index) {
       this.value.splice(index, 1)
-      this.$emit('input', this.value)
     }
   }
 }

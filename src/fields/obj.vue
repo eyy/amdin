@@ -5,9 +5,8 @@
       <td>
         <component
           :is="matchField(path)"
-          :value="value[name]"
           :paths="path"
-          @input="$emit('input', value)"
+          v-model="value[name]"
         />
       </td>
     </tr>
