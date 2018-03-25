@@ -1,23 +1,52 @@
 <template>
   <div>
     <button type="button" @click.prevent="add">Add</button>
-    <div v-for="(doc, index) in value" :key="doc._id" class="box">
-      <div class="controls">
-        <a href="#" @click="remove(index)">Remove</a>
-      </div>
-      <obj
-        :paths="paths.schema"
-        :value="value[index]"
-      />
-    </div>
+    <sortable-list
+      v-model="here"
+      lockAxis="y"
+      :useDragHandle="true"
+    >
+      <sortable-item
+        v-for="(doc, index) in here"
+        :index="index"
+        :key="doc._id"
+        class="box"
+      >
+        <div class="controls">
+          <a href="#" v-handle class="reorder">Order</a>,
+          <a href="#" @click.prevent="remove(index)">Remove</a>
+        </div>
+        <obj
+          :paths="paths.schema"
+          :value="here[index]"
+        />
+      </sortable-item>
+    </sortable-list>
   </div>
 </template>
 
 <script>
+import { HandleDirective } from 'vue-slicksort'
+import SortableList from '../components/sortable-list'
+import SortableItem from '../components/sortable-item'
+
 export default {
   props: {
-    value: Array,
+    value: {
+      type: Array,
+      default: () => []
+    },
     paths: Object
+  },
+  computed: {
+    here: {
+      get () {
+        return this.value
+      },
+      set (val) {
+        this.$emit('input', val)
+      }
+    }
   },
   methods: {
     add () {
@@ -26,17 +55,22 @@ export default {
     remove (index) {
       this.value.splice(index, 1)
     }
-  }
+  },
+  components: { SortableList, SortableItem },
+  directives: { handle: HandleDirective }
 }
 </script>
 
 <style lang="stylus">
 .box
-  border 1px solid #e3e3e3
   margin-top .5em
   padding .5em
   border-radius 3px
+  border 1px solid #e3e3e3
+  background white
   .controls
     font-size .8em
     text-align right
+    a.reorder
+      cursor move
 </style>

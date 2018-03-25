@@ -33,6 +33,7 @@
     "mongoose": "^5.0.11",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
+    "vue-slicksort": "^0.1.6",
     "vue-template-compiler": "^2.5.13"
   },
   "babel": {
