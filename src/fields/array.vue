@@ -1,6 +1,7 @@
 <template>
   <div>
     <button type="button" @click.prevent="add">Add</button>
+
     <sortable-list
       v-model="here"
       lockAxis="y"
@@ -13,7 +14,9 @@
         class="box"
       >
         <div class="controls">
-          <a href="#" v-handle class="reorder">Order</a>,
+          <span v-show="here.length > 1">
+            <a href="#" v-handle class="reorder">Order</a>,
+          </span>
           <a href="#" @click.prevent="remove(index)">Remove</a>
         </div>
         <obj
@@ -27,6 +30,7 @@
 
 <script>
 import { HandleDirective } from 'vue-slicksort'
+import { emptyDoc } from '../common'
 import SortableList from '../components/sortable-list'
 import SortableItem from '../components/sortable-item'
 
@@ -50,7 +54,7 @@ export default {
   },
   methods: {
     add () {
-      this.value.push({})
+      this.value.push(emptyDoc(this.paths))
     },
     remove (index) {
       this.value.splice(index, 1)

@@ -24,7 +24,7 @@ module.exports = function setModelOptions () {
       opts.label = opts.label || _.capitalize(name)
       opts.title = opts.title || paths.name ? 'name' : 'title'
       opts.paths = getPaths(paths)
-      opts.list = getListPaths(paths)
+      opts.list = opts.list || getListPaths(paths)
 
       debug(name, 'options init')
     }
