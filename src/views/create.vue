@@ -29,6 +29,7 @@ export default {
   async created () {
     this.model = this.$route.params.model
     this.opts = await getOptions(this.model)
+    this.doc = emptyDoc(this.opts.paths)
   },
   methods: {
     async save () {
@@ -36,5 +37,26 @@ export default {
       console.log(res)
     }
   }
+}
+
+function emptyDoc (paths) {
+  let acc = {}
+  for (let n in paths)
+    if (paths.hasOwnProperty(n))
+      acc[n] = empty(paths[n])
+  return acc
+}
+
+function empty (path) {
+  if (path.default)
+    return path.default
+
+  if (path.enum)
+    return path.enum[0]
+
+  if (path.schema)
+    return emptyDoc(path.schema)
+
+  return null
 }
 </script>

@@ -31,7 +31,8 @@ module.exports = function setModelOptions () {
 }
 
 function getListPaths (paths) {
-  return Object.keys(paths).filter(n => !n.startsWith('_'))
+  return Object.keys(paths)
+    .filter(n => !n.startsWith('_') && !paths[n].$isMongooseArray)
 }
 
 function getPaths (paths) {
