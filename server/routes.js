@@ -34,12 +34,21 @@ api.get('/:model', async ctx => {
   ctx.body = docs
 })
 
+api.post('/:model', async ctx => {
+  ctx.body = await ctx.Model.create(ctx.request.body)
+})
+
 api.get('/:model/options', ctx => {
   ctx.body = ctx.Model.amdin
 })
 
-api.post('/:model', async ctx => {
-  ctx.body = await ctx.Model.create(ctx.request.body)
+api.get('/:model/ref', async ctx => {
+  let title = ctx.Model.amdin.title
+  let docs = await ctx.Model.find()
+    .select(title)
+    .lean()
+
+  ctx.body = docs.map(d => [ d._id, d[title] ])
 })
 
 api.use('/:model/:id', async (ctx, next) => {

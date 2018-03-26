@@ -5,7 +5,7 @@
         type="radio"
         name="paths"
         :value="opt"
-        :checked="opt === paths.default"
+        :checked="opt === value"
         @change="$emit('input', $event.target.value)"
       />
       {{ opt }}

@@ -6,7 +6,6 @@
         - multiple
             - reorder
         - resize picture
-    - ref
     - number
         - min max
     - date

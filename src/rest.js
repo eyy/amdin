@@ -32,6 +32,10 @@ export function getDocs (model) {
   return go(model)
 }
 
+export function getRef (model) {
+  return go(model + '/ref')
+}
+
 export function postDoc (model, data) {
   return go(model, {
     method: 'POST',

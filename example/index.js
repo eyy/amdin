@@ -6,6 +6,7 @@ const Koa = require('koa'),
 
 require('./models/book')
 require('./models/author')
+require('./models/field')
 
 mongoose.connect('mongodb://localhost/amdin')
   .then(() => console.log('mongoose connected'))
