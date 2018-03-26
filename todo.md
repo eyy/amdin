@@ -6,8 +6,6 @@
         - multiple
             - reorder
         - resize picture
-    - number
-        - min max
     - date
     - time
     - datetime

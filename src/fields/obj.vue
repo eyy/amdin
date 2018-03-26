@@ -1,7 +1,10 @@
 <template>
   <table>
     <tr v-for="(path, name) in paths" :key="name">
-      <th>{{ path.label }}</th>
+      <th>
+        {{ path.label }}
+        <span v-if="path.required" class="required">*</span>
+      </th>
       <td>
         <component
           :is="matchField(path)"
@@ -19,6 +22,7 @@ import textarea from './textarea'
 import checkbox from './checkbox'
 import array from './array'
 import radio from './radio'
+import number from './number'
 import ref from './ref'
 
 export default {
@@ -47,6 +51,9 @@ function matchField (path) {
   if ('textarea' === field)
     return textarea
 
+  if ('number' === field)
+    return number
+
   return text
 }
 </script>
@@ -56,4 +63,7 @@ th
   padding .55em 1em 1em 0
   text-align left
   vertical-align top
+
+span.required
+  color gray
 </style>

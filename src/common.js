@@ -16,5 +16,10 @@ function empty (path) {
   if (path.schema)
     return []
 
+  let type = path.type.toLowerCase()
+
+  if (type === 'number')
+    return path.min ? path.min : 0
+
   return null
 }
