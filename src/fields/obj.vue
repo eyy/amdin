@@ -17,44 +17,12 @@
 </template>
 
 <script>
-import text from './text'
-import textarea from './textarea'
-import checkbox from './checkbox'
-import array from './array'
-import radio from './radio'
-import number from './number'
-import ref from './ref'
+import { matchField } from './index'
 
 export default {
   name: 'obj',
   props: [ 'value', 'paths' ],
-  methods: {
-    matchField
-  }
-}
-
-function matchField (path) {
-  let field = path.field || path.type.toLowerCase()
-
-  if (path.enum)
-    return radio
-
-  if (path.ref)
-    return ref
-
-  if ('boolean' === field)
-    return checkbox
-
-  if ('array' === field)
-    return array
-
-  if ('textarea' === field)
-    return textarea
-
-  if ('number' === field)
-    return number
-
-  return text
+  methods: { matchField }
 }
 </script>
 

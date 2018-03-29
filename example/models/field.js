@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const Field = module.exports = mongoose.model('field', {
   title: { type: String, required: true },
   boolean: Boolean,
+  date: Date,
   num: { type: Number, min: 5, max: 42 },
   object: {
     nested: { type: String, field: 'textarea' }

@@ -71,4 +71,6 @@ export default {
     text-align start
     padding 0 .5em .5em 0
 
+  td:first-child
+    min-width 10em
 </style>
