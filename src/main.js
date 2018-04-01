@@ -7,19 +7,20 @@ import Toasted from 'vue-toasted'
 Vue.component('obj', obj)
 
 Vue.use(Toasted, {
-  position: 'bottom-center',
-  duration: 8000,
-  className: 'toasted-amdin',
   singleton: true,
+  duration: 8000,
+  position: 'bottom-center',
+  className: 'toasted-amdin',
   action: {
     text: '×',
     onClick (e, toastObject) {
-      toastObject.goAway(0)
+      toastObject.goAway()
     }
   }
 })
 router.afterEach((to, from) => {
-  Vue.toasted.clear()
+  if (from.name !== 'create' || to.name !== 'edit')
+    Vue.toasted.clear()
 })
 
 Vue.config.productionTip = false

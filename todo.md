@@ -6,7 +6,6 @@
         - multiple
             - reorder
         - resize picture
-    - editable: false
 
 - list view
     - show picture
@@ -19,3 +18,5 @@
     - rtl
     - heb
 - logo
+
+- validate errors within arrays

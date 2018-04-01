@@ -1,6 +1,6 @@
 const Router = require('koa-router'),
-  mongoose = require('mongoose'),
-  models = mongoose.models
+  { models } = require('mongoose'),
+  { preSave } = require('./options')
 
 const router = module.exports = new Router
 
@@ -24,7 +24,9 @@ api.get('/:model', async ctx => {
 })
 
 api.post('/:model', async ctx => {
-  ctx.body = await ctx.Model.create(ctx.request.body)
+  ctx.body = await ctx.Model.create(
+    preSave(ctx.request.body, ctx.Model)
+  )
 })
 
 api.get('/:model/options', ctx => {
@@ -57,9 +59,13 @@ api.get('/:model/:id', async ctx => {
 })
 
 api.put('/:model/:id', async ctx => {
-  ctx.body = await ctx.Model.findByIdAndUpdate(ctx.params.id, ctx.request.body, {
-    runValidators: true
-  })
+  ctx.body = await ctx.Model.findByIdAndUpdate(
+    ctx.params.id,
+    preSave(ctx.request.body, ctx.Model),
+    {
+      runValidators: true
+    }
+  )
 })
 
 api.delete('/:model/:id', async ctx => {

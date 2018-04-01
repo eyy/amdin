@@ -10,6 +10,7 @@
       :paths="opts.paths"
       :doc="doc"
       :submit="d => postDoc(model, d)"
+      @saved="res => $router.push({ name: 'edit', params: { model, id: res._id } })"
     />
   </div>
 </template>

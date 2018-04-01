@@ -6,9 +6,13 @@ import radio from './radio'
 import number from './number'
 import date from './date'
 import ref from './ref'
+import plain from './plain'
 
 export function matchField (path) {
   let field = path.field || path.type.toLowerCase()
+
+  if (path.editable === false)
+    return plain
 
   if (path.enum)
     return radio

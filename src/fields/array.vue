@@ -4,8 +4,8 @@
 
     <sortable-list
       v-model="here"
-      lockAxis="y"
-      :useDragHandle="true"
+      lock-axis="y"
+      :use-drag-handle="true"
     >
       <sortable-item
         v-for="(doc, index) in here"

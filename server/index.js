@@ -3,9 +3,8 @@ const Koa = require('koa'),
   error = require('koa-json-error'),
   body = require('koa-body'),
   mount = require('koa-mount'),
-  path = require('path'),
   routes = require('./routes'),
-  setModelOptions = require('./options')
+  { setModelOptions } = require('./options')
 
 module.exports = function init (options) {
   setModelOptions()

@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 
 const Book = module.exports = mongoose.model('book', {
   title: { type: String, required: true },
-  author: { type: mongoose.Schema.Types.ObjectId, ref: 'author' }
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'author' },
+  created: { type: Date, editable: false, default: Date.now }
 })
 
 Book.amdin = {
@@ -20,3 +21,11 @@ Book.amdin = {
     })
   }
 }
+
+if (!module.parent)
+  (async function () {
+    let b = new Book({ title: 'test' })
+    console.log(b)
+    let c = await b.save()
+    console.log(c)
+  })()

@@ -13,7 +13,10 @@ const _ = require('lodash'),
   }
  */
 
-module.exports = function setModelOptions () {
+exports.setModelOptions = setModelOptions
+exports.preSave = preSave
+
+function setModelOptions () {
   let models = mongoose.models
 
   for (let name in models)
@@ -33,7 +36,9 @@ module.exports = function setModelOptions () {
 }
 
 function defaultListFn (Model) {
-  return () => Model.find().select(Model.amdin.list).lean()
+  return () => Model.find()
+    .select(Model.amdin.list)
+    .lean()
 }
 
 function getListPaths (paths) {
@@ -56,4 +61,15 @@ function getPaths (paths) {
     acc[name] = opts
     return acc
   }, {})
+}
+
+function preSave (doc, Model) {
+  let paths = Model.amdin.paths
+
+  for (let path in paths)
+    if (paths.hasOwnProperty(path))
+      if (paths[ path ].editable === false)
+        delete doc[ path ]
+
+  return doc
 }

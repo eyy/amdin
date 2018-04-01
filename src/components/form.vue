@@ -45,9 +45,9 @@ export default {
         this.$toasted.error('There was a problem :(')
       }
       else {
-        // console.log('saved', res)
         this.errors = {}
         this.$toasted.success('Saved!')
+        this.$emit('saved', res)
       }
     }
   }

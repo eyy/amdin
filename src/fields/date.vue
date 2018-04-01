@@ -9,6 +9,6 @@
 
 <script>
 export default {
-  props: [ 'value' ]
+  props: [ 'value', 'path' ]
 }
 </script>

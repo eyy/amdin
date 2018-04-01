@@ -73,13 +73,13 @@ export default {
             text: 'Delete',
             onClick (e, toastObject) {
               toastObject.goAway(0)
-              del(id, index, title)
+              setTimeout(() => del(id, index, title), 0)
             }
           },
           {
             text: 'Never mind',
             onClick (e, toastObject) {
-              toastObject.goAway(0)
+              toastObject.goAway()
             }
           }
         ]
@@ -91,9 +91,7 @@ export default {
         return
 
       this.docs.splice(index, 1)
-      this.$toasted.show(`${title} was deleted.`, {
-        type: 'info'
-      })
+      this.$toasted.info(`${title} was deleted.`)
     }
   }
 }
