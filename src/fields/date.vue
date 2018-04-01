@@ -2,6 +2,7 @@
   <input
     type="date"
     :value="value"
+    :required="path.required"
     @input="$emit('input', $event.target.value)"
   />
 </template>

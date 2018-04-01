@@ -2,6 +2,7 @@
   <input
     type="text"
     :value="value"
+    :required="path.required"
     :maxlength="path.maxlength"
     :minlength="path.minlength"
     @input="$emit('input', $event.target.value)"
