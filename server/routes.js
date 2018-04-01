@@ -57,7 +57,9 @@ api.get('/:model/:id', async ctx => {
 })
 
 api.put('/:model/:id', async ctx => {
-  ctx.body = await ctx.Model.findByIdAndUpdate(ctx.params.id, ctx.request.body)
+  ctx.body = await ctx.Model.findByIdAndUpdate(ctx.params.id, ctx.request.body, {
+    runValidators: true
+  })
 })
 
 api.delete('/:model/:id', async ctx => {

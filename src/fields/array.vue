@@ -20,7 +20,7 @@
           <a href="#" @click.prevent="remove(index)">Remove</a>
         </div>
         <obj
-          :paths="paths.schema"
+          :paths="path.schema"
           :value="here[index]"
         />
       </sortable-item>
@@ -38,9 +38,9 @@ export default {
   props: {
     value: {
       type: Array,
-      default: () => []
+      'default': () => []
     },
-    paths: Object
+    path: Object
   },
   computed: {
     here: {
@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     add () {
-      this.value.push(emptyDoc(this.paths))
+      this.here = [ emptyDoc(this.path.schema) ].concat(this.value)
     },
     remove (index) {
       this.value.splice(index, 1)

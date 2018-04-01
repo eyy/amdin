@@ -3,7 +3,7 @@
     @change="$emit('input', $event.target.value)"
   >
     <option
-      v-if="!paths.require"
+      v-if="!path.require"
     ></option>
     <option
       v-for="doc in options"
@@ -22,13 +22,13 @@ import { getRef } from '../rest'
 export default {
   props: {
     value: String,
-    paths: Object
+    path: Object
   },
   data: () => ({
     options: []
   }),
   async created () {
-    this.options = await getRef(this.paths.ref)
+    this.options = await getRef(this.path.ref)
   }
 }
 </script>

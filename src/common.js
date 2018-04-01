@@ -16,6 +16,8 @@ function empty (path) {
   if (path.schema)
     return []
 
+  console.log('path', path)
+
   let type = path.type.toLowerCase()
 
   if (type === 'number')

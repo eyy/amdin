@@ -9,7 +9,7 @@
       Add a new {{ opts.label }}
     </router-link>
 
-    <table>
+    <table id="list">
       <tr>
         <th v-for="path in opts.list" :key="path">
           {{ opts.paths[path].label }}
@@ -64,8 +64,8 @@ export default {
 </script>
 
 <style lang="stylus">
-  table
-    margin-top 1em
+table#list
+  margin-top 1em
 
   th, td
     text-align start

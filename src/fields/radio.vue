@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label v-for="opt in paths.enum" :key="opt">
+    <label v-for="opt in path.enum" :key="opt">
       <input
         type="radio"
         name="paths"
@@ -17,7 +17,7 @@
 export default {
   props: {
     value: String,
-    paths: Object
+    path: Object
   }
 }
 </script>

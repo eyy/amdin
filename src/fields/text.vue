@@ -2,12 +2,14 @@
   <input
     type="text"
     :value="value"
+    :maxlength="path.maxlength"
+    :minlength="path.minlength"
     @input="$emit('input', $event.target.value)"
   />
 </template>
 
 <script>
 export default {
-  props: [ 'value' ]
+  props: [ 'value', 'path' ]
 }
 </script>

@@ -13,9 +13,13 @@ function go (path = '', opts = {}) {
   }
   return fetch(root + path, opts)
     .then(res => res.json())
+    .then(res => {
+      if (res.status === 500 && res.name !== 'ValidationError')
+        return Promise.reject(res)
+      return res
+    })
     .catch(err => {
       bus.$emit('error', err)
-      console.error(err)
       return err
     })
 }

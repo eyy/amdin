@@ -1,11 +1,6 @@
 <template>
   <div id="app">
     <router-view/>
-
-    <div v-if="error" class="error">
-      <h2>Error</h2>
-      <p>{{ error.message }}</p>
-    </div>
   </div>
 </template>
 
@@ -13,12 +8,12 @@
 import { bus } from '../rest'
 
 export default {
-  data: () => ({
-    error: null
-  }),
   async created () {
     bus.$on('error', err => {
-      this.error = err
+      this.$toasted.show('There was a problem :(', {
+        type: 'error'
+      })
+      console.error(err)
     })
   }
 }
@@ -44,6 +39,8 @@ h1, h2, h3
   margin 0 0 1em
   a
     text-decoration none
+    &:hover
+      text-decoration underline
 
 a
   color $blue
@@ -69,4 +66,9 @@ button
     &:hover
       background $dark_red
 
+.toasted-amdin
+  box-shadow none !important
+  border-radius 3px !important
+  a
+    color darkslategray !important
 </style>

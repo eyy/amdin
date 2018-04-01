@@ -8,9 +8,12 @@
       <td>
         <component
           :is="matchField(path)"
-          :paths="path"
+          :path="path"
           v-model="value[name]"
         />
+        <span class="error" v-if="errors[name]">
+          {{ errors[name].message }}
+        </span>
       </td>
     </tr>
   </table>
@@ -21,15 +24,18 @@ import { matchField } from './index'
 
 export default {
   name: 'obj',
-  props: [ 'value', 'paths' ],
+  props: {
+    value: Object,
+    paths: Object,
+    errors: { type: Object, 'default': () => ({}) }
+  },
   methods: { matchField }
 }
 </script>
 
 <style lang="stylus">
 th
-  padding .55em 1em 1em 0
-  text-align left
+  padding .7em 1em 1em 0
   vertical-align top
 
 span.required

@@ -1,11 +1,24 @@
 <template>
-  <form @submit.prevent="$emit('submit', doc)">
+  <form @submit.prevent="save">
     <obj
       :paths="paths"
       :value="doc"
+      :errors="errors"
     />
 
-    <button type="submit">Save</button>
+    <button
+      type="submit"
+      :disabled="saving"
+    >
+      Save
+    </button>
+    <span v-if="saving" class="info">
+      ...
+    </span>
+
+    <div class="error" v-if="errors">
+      {{ errors.message }}
+    </div>
   </form>
 </template>
 
@@ -13,12 +26,42 @@
 export default {
   props: {
     doc: Object,
-    paths: Object
+    paths: Object,
+    submit: Function
+  },
+  data: () => ({
+    errors: {},
+    saving: false
+  }),
+  methods: {
+    async save () {
+      this.saving = true
+      let res = await this.submit(this.doc)
+      this.saving = false
+
+      if (res.status === 500 && res.name === 'ValidationError') {
+        this.errors = res.errors
+        console.error('error', res)
+        this.$toasted.show('There was a problem :(', {
+          type: 'error'
+        })
+      }
+      else {
+        // console.log('saved', res)
+        this.errors = {}
+        this.$toasted.show('Saved!', {
+          type: 'success'
+        })
+      }
+    }
   }
 }
 </script>
 
 <style lang="stylus">
+form
+  margin-bottom 1em
+
 input, select, textarea
   padding .5em
   min-width 15em
@@ -36,4 +79,6 @@ textarea
 button[type=submit]
   font-size 1em
   margin-top 1em
+  &[disabled]
+    background lightslategray !important
 </style>

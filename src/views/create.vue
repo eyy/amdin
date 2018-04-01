@@ -9,18 +9,17 @@
     <a-form
       :paths="opts.paths"
       :doc="doc"
-      @submit="save()"
+      :submit="d => postDoc(model, d)"
     />
   </div>
 </template>
 
 <script>
 import { getOptions, postDoc } from '../rest'
-import form from '../components/form'
 import { emptyDoc } from '../common'
+import AForm from '../components/form'
 
 export default {
-  components: { 'a-form': form },
   data: () => ({
     model: '',
     id: null,
@@ -32,11 +31,7 @@ export default {
     this.opts = await getOptions(this.model)
     this.doc = emptyDoc(this.opts.paths)
   },
-  methods: {
-    async save () {
-      let res = await postDoc(this.model, this.doc)
-      console.log(res)
-    }
-  }
+  methods: { postDoc },
+  components: { AForm }
 }
 </script>

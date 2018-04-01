@@ -7,7 +7,8 @@
     "koa": "DEBUG=amdin node example/index",
     "vue": "vue-cli-service serve --open",
     "build": "NODE_ENV=production vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test": "tape tests"
   },
   "peerDependencies": {
     "mongoose": "^5.0.11"
@@ -29,12 +30,15 @@
     "@vue/cli-plugin-eslint": "^3.0.0-beta.6",
     "@vue/cli-service": "^3.0.0-beta.6",
     "@vue/eslint-config-standard": "^3.0.0-beta.6",
+    "@vue/test-utils": "^1.0.0-beta.13",
     "koa-logger": "^3.2.0",
-    "mongoose": "^5.0.11",
+    "mongoose": "^5.0.12",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
+    "tape": "^4.9.0",
     "vue-slicksort": "^0.1.6",
-    "vue-template-compiler": "^2.5.13"
+    "vue-template-compiler": "^2.5.13",
+    "vue-toasted": "^1.1.24"
   },
   "babel": {
     "presets": [
@@ -52,7 +56,11 @@
       "new-parens": 0,
       "curly": 0,
       "eol-last": 0,
-      "yoda": 0
+      "yoda": 0,
+      "brace-style": [
+        1,
+        "stroustrup"
+      ]
     }
   },
   "eslintIgnore": [
