@@ -25,12 +25,16 @@ export default {
     opts: { paths: {} },
     doc: {}
   }),
-  async created () {
-    this.model = this.$route.params.model
-    this.id = this.$route.params.id
+  async beforeRouteEnter (to, from, next) {
+    let { model, id } = to.params
+    let [ opts, doc ] = await Promise.all([ getOptions(model), getDoc(model, id) ])
 
-    this.opts = await getOptions(this.model)
-    this.doc = await getDoc(this.model, this.id)
+    next(vm => {
+      vm.model = model
+      vm.id = id
+      vm.opts = opts
+      vm.doc = doc
+    })
   },
   methods: { putDoc },
   components: { AForm }

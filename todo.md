@@ -8,8 +8,6 @@
         - resize picture
     - editable: false
 
-- [wait before route change](https://router.vuejs.org/en/advanced/navigation-guards.html)
-
 - list view
     - show picture
     - search / filter

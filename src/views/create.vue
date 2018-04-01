@@ -22,14 +22,18 @@ import AForm from '../components/form'
 export default {
   data: () => ({
     model: '',
-    id: null,
     opts: { paths: {} },
     doc: {}
   }),
-  async created () {
-    this.model = this.$route.params.model
-    this.opts = await getOptions(this.model)
-    this.doc = emptyDoc(this.opts.paths)
+  async beforeRouteEnter (to, from, next) {
+    let { model } = to.params
+    let opts = await getOptions(model)
+
+    next(vm => {
+      vm.model = model
+      vm.opts = opts
+      vm.doc = emptyDoc(opts.paths)
+    })
   },
   methods: { postDoc },
   components: { AForm }

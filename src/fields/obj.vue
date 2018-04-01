@@ -37,6 +37,7 @@ export default {
 th
   padding .7em 1em 1em 0
   vertical-align top
+  text-align start
 
 span.required
   color gray

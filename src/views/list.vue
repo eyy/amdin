@@ -9,7 +9,11 @@
       Add a new {{ opts.label }}
     </router-link>
 
-    <table id="list">
+    <p v-if="!docs.length">
+      <strong>No Documents.</strong>
+    </p>
+
+    <table id="list" v-else>
       <tr>
         <th v-for="path in opts.list" :key="path">
           {{ opts.paths[path].label }}
@@ -46,12 +50,15 @@ export default {
     opts: {},
     docs: []
   }),
-  async created () {
-    this.model = this.$route.params.model
-    // this.opts.label = this.model
+  async beforeRouteEnter (to, from, next) {
+    let { model } = to.params
+    let [ opts, docs ] = await Promise.all([ getOptions(model), getDocs(model) ])
 
-    this.opts = await getOptions(this.model)
-    this.docs = await getDocs(this.model)
+    next(vm => {
+      vm.model = model
+      vm.opts = opts
+      vm.docs = docs
+    })
   },
   methods: {
     async del (id, index) {
