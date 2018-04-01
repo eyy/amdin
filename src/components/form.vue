@@ -42,16 +42,12 @@ export default {
       if (res.status === 500 && res.name === 'ValidationError') {
         this.errors = res.errors
         console.error('error', res)
-        this.$toasted.show('There was a problem :(', {
-          type: 'error'
-        })
+        this.$toasted.error('There was a problem :(')
       }
       else {
         // console.log('saved', res)
         this.errors = {}
-        this.$toasted.show('Saved!', {
-          type: 'success'
-        })
+        this.$toasted.success('Saved!')
       }
     }
   }

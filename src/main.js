@@ -4,6 +4,8 @@ import app from './views/app'
 import obj from './fields/obj'
 import Toasted from 'vue-toasted'
 
+Vue.component('obj', obj)
+
 Vue.use(Toasted, {
   position: 'bottom-center',
   duration: 8000,
@@ -16,7 +18,9 @@ Vue.use(Toasted, {
     }
   }
 })
-Vue.component('obj', obj)
+router.afterEach((to, from) => {
+  Vue.toasted.clear()
+})
 
 Vue.config.productionTip = false
 

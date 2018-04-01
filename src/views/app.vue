@@ -10,9 +10,7 @@ import { bus } from '../rest'
 export default {
   async created () {
     bus.$on('error', err => {
-      this.$toasted.show('There was a problem :(', {
-        type: 'error'
-      })
+      this.$toasted.error('There was a problem :(')
       console.error(err)
     })
   }
