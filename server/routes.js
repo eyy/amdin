@@ -20,18 +20,7 @@ api.use('/:model', async (ctx, next) => {
 })
 
 api.get('/:model', async ctx => {
-  let opts = ctx.Model.amdin,
-    docs
-
-  if (opts.listFn)
-    docs = await opts.listFn()
-
-  else
-    docs = await ctx.Model.find()
-      .select(opts.list)
-      .lean()
-
-  ctx.body = docs
+  ctx.body = await ctx.Model.amdin.listFn()
 })
 
 api.post('/:model', async ctx => {

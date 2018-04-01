@@ -1,7 +1,6 @@
 const _ = require('lodash'),
   debug = require('debug')('amdin'),
-  mongoose = require('mongoose'),
-  models = mongoose.models
+  mongoose = require('mongoose')
 
 // init model options
 
@@ -15,6 +14,8 @@ const _ = require('lodash'),
  */
 
 module.exports = function setModelOptions () {
+  let models = mongoose.models
+
   for (let name in models)
     if (models.hasOwnProperty(name)) {
       let Model = models[name],
@@ -23,11 +24,16 @@ module.exports = function setModelOptions () {
 
       opts.label = opts.label || _.capitalize(name)
       opts.title = opts.title || paths.name ? 'name' : 'title'
-      opts.paths = getPaths(paths)
       opts.list = opts.list || getListPaths(paths)
+      opts.listFn = opts.listFn || defaultListFn(Model)
+      opts.paths = getPaths(paths)
 
       debug(name, 'options init')
     }
+}
+
+function defaultListFn (Model) {
+  return () => Model.find().select(Model.amdin.list).lean()
 }
 
 function getListPaths (paths) {

@@ -3,6 +3,7 @@ const Koa = require('koa'),
   error = require('koa-json-error'),
   body = require('koa-body'),
   mount = require('koa-mount'),
+  path = require('path'),
   routes = require('./routes'),
   setModelOptions = require('./options')
 
@@ -14,7 +15,7 @@ module.exports = function init (options) {
 
 const app = new Koa
 
-app.use(body())
+app.use(serve('../dist'))
 app.use(error())
+app.use(body())
 app.use(routes.routes())
-app.use(serve('dist'))
