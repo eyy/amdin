@@ -55,9 +55,38 @@ export default {
   },
   methods: {
     async del (id, index) {
+      let title = this.docs[index][this.opts.title],
+        del = this.realDel
+
+      this.$toasted.show(`Are you sure you want to delete ${title}?`, {
+        duration: null,
+        type: 'error',
+        action: [
+          {
+            text: 'Delete',
+            onClick (e, toastObject) {
+              toastObject.goAway(0)
+              del(id, index, title)
+            }
+          },
+          {
+            text: 'Never mind',
+            onClick (e, toastObject) {
+              toastObject.goAway(0)
+            }
+          }
+        ]
+      })
+    },
+    async realDel (id, index, title) {
       let res = await deleteDoc(this.model, id)
-      if (res.ok)
-        this.docs.splice(index, 1)
+      if (!res.ok)
+        return
+
+      this.docs.splice(index, 1)
+      this.$toasted.show(`${title} was deleted.`, {
+        type: 'info'
+      })
     }
   }
 }

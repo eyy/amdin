@@ -14,7 +14,8 @@ Book.amdin = {
       .lean()
 
     return docs.map(d => {
-      d.author = d.author.name
+      if (d.author)
+        d.author = d.author.name
       return d
     })
   }

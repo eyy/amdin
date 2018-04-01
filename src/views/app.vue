@@ -70,5 +70,5 @@ button
   box-shadow none !important
   border-radius 3px !important
   a
-    color darkslategray !important
+    color white !important
 </style>
