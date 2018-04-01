@@ -26,6 +26,7 @@ function setModelOptions () {
         opts = Model.amdin = Model.amdin || {}
 
       opts.label = opts.label || _.capitalize(name)
+      opts.plural = opts.plural || _.capitalize(name) + 's'
       opts.title = opts.title || paths.name ? 'name' : 'title'
       opts.list = opts.list || getListPaths(paths)
       opts.listFn = opts.listFn || defaultListFn(Model)

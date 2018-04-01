@@ -1,9 +1,9 @@
 <template>
   <div>
     <h2>
-      <router-link to="/">Admin</router-link>
-      / <router-link :to="'/' + model">{{ opts.label }}</router-link>
-      / <em>{{ doc[opts.title] || 'Untitled' }}</em>
+      <router-link to="/">{{ ___('Admin') }}</router-link>
+      / <router-link :to="'/' + model">{{ opts.plural }}</router-link>
+      / <em>{{ doc[opts.title] || ___('Untitled') }}</em>
     </h2>
 
     <a-form

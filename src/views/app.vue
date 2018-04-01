@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ rtl: ___('ltr') === 'rtl' }">
     <router-view/>
   </div>
 </template>
@@ -10,7 +10,7 @@ import { bus } from '../rest'
 export default {
   async created () {
     bus.$on('error', err => {
-      this.$toasted.error('There was a problem :(')
+      this.$toasted.error(this.___('There was a problem :('))
       console.error(err)
     })
   }
@@ -22,6 +22,9 @@ $blue = #6180ff
 $dark_blue = #53419a
 $red = #c7324b
 $dark_red = #972551
+
+.rtl
+  direction rtl
 
 html
   padding 2em
@@ -63,6 +66,9 @@ button
     background $red
     &:hover
       background $dark_red
+  .rtl &
+    margin-right 0
+    margin-left .5em
 
 .toasted-amdin
   box-shadow none !important

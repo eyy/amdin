@@ -10,7 +10,7 @@
       type="submit"
       :disabled="saving"
     >
-      Save
+      {{ ___('Save') }}
     </button>
     <span v-if="saving" class="info">
       ...
@@ -38,15 +38,16 @@ export default {
       this.saving = true
       let res = await this.submit(this.doc)
       this.saving = false
+      let ___ = this.___
 
       if (res.status === 500 && res.name === 'ValidationError') {
         this.errors = res.errors
         console.error('error', res)
-        this.$toasted.error('There was a problem :(')
+        this.$toasted.error(___('There was a problem :('))
       }
       else {
         this.errors = {}
-        this.$toasted.success('Saved!')
+        this.$toasted.success(___('Saved!'))
         this.$emit('saved', res)
       }
     }

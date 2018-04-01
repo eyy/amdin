@@ -8,7 +8,7 @@ const api = new Router
 
 api.get('/', ctx => {
   ctx.body = Object.keys(models)
-    .map(m => ({ name: m, label: models[m].amdin.label }))
+    .map(m => ({ name: m, label: models[m].amdin.label, plural: models[m].amdin.plural }))
 })
 
 api.use('/:model', async (ctx, next) => {

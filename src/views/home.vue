@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1>Welcome!</h1>
+    <h1>{{ ___('Welcome!') }}</h1>
 
     <h2 v-for="model in models" :key="model.name">
-      <router-link :to="model.name">{{ model.label }}</router-link>
+      <router-link :to="model.name">{{ model.plural }}</router-link>
     </h2>
   </div>
 </template>

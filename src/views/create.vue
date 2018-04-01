@@ -1,9 +1,9 @@
 <template>
   <div>
     <h2>
-      <router-link to="/">Admin</router-link>
-      / <router-link :to="'/' + model">{{ opts.label }}</router-link>
-      / New
+      <router-link to="/">{{ ___('Admin') }}</router-link>
+      / <router-link :to="'/' + model">{{ opts.plural }}</router-link>
+      / {{ ___('New') }}
     </h2>
 
     <a-form

@@ -6,6 +6,7 @@
         - multiple
             - reorder
         - resize picture
+    - wysiwyg
 
 - list view
     - show picture
@@ -15,8 +16,8 @@
     - actions
 
 - i18n
-    - rtl
-    - heb
+    - not hard-coded
+
 - logo
 
 - validate errors within arrays

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <button type="button" @click.prevent="add">Add</button>
+    <button type="button" @click.prevent="add">
+      {{ ___('Add') }}
+    </button>
 
     <sortable-list
       v-model="here"
@@ -15,9 +17,9 @@
       >
         <div class="controls">
           <span v-show="here.length > 1">
-            <a href="#" v-handle class="reorder">Order</a>,
+            <a href="#" v-handle class="reorder">{{ ___('Order') }}</a>,
           </span>
-          <a href="#" @click.prevent="remove(index)">Remove</a>
+          <a href="#" @click.prevent="remove(index)">{{ ___('Remove') }}</a>
         </div>
         <obj
           :paths="path.schema"
