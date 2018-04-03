@@ -15,9 +15,6 @@
     - sortable
     - actions
 
-- i18n
-    - not hard-coded
-
 - logo
 
 - validate errors within arrays

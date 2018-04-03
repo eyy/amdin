@@ -4,11 +4,17 @@ const Koa = require('koa'),
   body = require('koa-body'),
   mount = require('koa-mount'),
   routes = require('./routes'),
-  { setModelOptions } = require('./options')
+  { setModelOptions, registry } = require('./options')
 
 module.exports = function init (options) {
   setModelOptions()
-  app.context.amdin = options
+
+  registry.lang = options.lang
+    ? require('../lang/' + options.lang)
+    : { _name: 'English' }
+
+  registry.title = options.title
+
   return mount('/admin', app)
 }
 

@@ -1,14 +1,21 @@
 <template>
-  <div id="app" :class="{ rtl: ___('ltr') === 'rtl' }">
-    <router-view/>
+  <div id="app">
+    <router-view v-if="ready"/>
   </div>
 </template>
 
 <script>
-import { bus } from '../rest'
+import { bus, start } from '../rest'
 
 export default {
+  data: () => ({
+    ready: false
+  }),
   async created () {
+    let { conf } = await start()
+    this.$setLang(conf.lang)
+    this.ready = true
+
     bus.$on('error', err => {
       this.$toasted.error(this.___('There was a problem :('))
       console.error(err)
@@ -22,9 +29,6 @@ $blue = #6180ff
 $dark_blue = #53419a
 $red = #c7324b
 $dark_red = #972551
-
-.rtl
-  direction rtl
 
 html
   padding 2em

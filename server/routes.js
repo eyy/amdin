@@ -1,14 +1,21 @@
 const Router = require('koa-router'),
   { models } = require('mongoose'),
-  { preSave } = require('./options')
+  { preSave, registry } = require('./options')
 
 const router = module.exports = new Router
 
 const api = new Router
 
 api.get('/', ctx => {
-  ctx.body = Object.keys(models)
-    .map(m => ({ name: m, label: models[m].amdin.label, plural: models[m].amdin.plural }))
+  ctx.body = {
+    models: Object.keys(models)
+      .map(m => ({
+        name: m,
+        label: models[ m ].amdin.label,
+        plural: models[ m ].amdin.plural
+      })),
+    conf: registry
+  }
 })
 
 api.use('/:model', async (ctx, next) => {

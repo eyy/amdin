@@ -9,14 +9,15 @@
 </template>
 
 <script>
-import { listModels } from '../rest'
+import { start } from '../rest'
 
 export default {
   data: () => ({
     models: []
   }),
   async created () {
-    this.models = await listModels()
+    let { models } = await start()
+    this.models = models
   }
 }
 </script>

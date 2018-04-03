@@ -4,13 +4,10 @@ import translate from './translate'
 import router from './router'
 import app from './views/app'
 import obj from './fields/obj'
-import he from './loc/he'
 
 Vue.component('obj', obj)
 
-Vue.use(translate, {
-  dict: he
-})
+Vue.use(translate)
 
 Vue.use(Toasted, {
   singleton: true,

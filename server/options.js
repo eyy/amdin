@@ -15,6 +15,7 @@ const _ = require('lodash'),
 
 exports.setModelOptions = setModelOptions
 exports.preSave = preSave
+exports.registry = {}
 
 function setModelOptions () {
   let models = mongoose.models

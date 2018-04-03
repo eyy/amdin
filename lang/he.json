@@ -1,5 +1,6 @@
 {
-  "ltr": "rtl",
+  "_name": "עברית",
+  "_direction": "rtl",
   "$1 was deleted.": "$1 נמחק.",
   "Add": "הוספה",
   "Add a new $1": "$1 חדש",
@@ -11,7 +12,7 @@
   "New": "חדש",
   "No Documents.": "אין עדיין.",
   "Order": "סדר",
-  "Remove": "הסר",
+  "Remove": "מחיקה",
   "Save": "שמירה",
   "Saved!": "נשמר!",
   "Untitled": "ללא־שם",

@@ -24,7 +24,7 @@ function go (path = '', opts = {}) {
     })
 }
 
-export const listModels = memoize(function () {
+export const start = memoize(function () {
   return go()
 })
 

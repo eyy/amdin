@@ -20,7 +20,8 @@ app.use(logger())
 // here you go
 
 app.use(admin({
-  title: 'Amdin Example'
+  title: 'Amdin Example',
+  lang: 'he'
 }))
 
 app.use(ctx => {
