@@ -7,7 +7,7 @@ const Koa = require('koa'),
   routes = require('./routes'),
   { setModelOptions, registry } = require('./options')
 
-module.exports = function init (options) {
+module.exports = function init (options = {}) {
   setModelOptions()
 
   registry.lang = options.lang

@@ -2,7 +2,7 @@ const Koa = require('koa'),
   logger = require('koa-logger'),
   cors = require('@koa/cors'),
   mongoose = require('mongoose'),
-  admin = require('../server')
+  admin = require('../../server')
 
 require('./models/book')
 require('./models/author')

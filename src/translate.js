@@ -1,7 +1,6 @@
 export default {
   install (Vue, options = {}) {
     let dict = {}
-    global.dict = dict
 
     Vue.prototype.___ = function (...params) {
       let text = params[ 0 ]

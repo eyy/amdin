@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "npm run koa & npm run vue",
-    "koa": "DEBUG=amdin node example/index",
+    "koa": "DEBUG=amdin node example/two/index",
     "vue": "vue-cli-service serve --open",
     "build": "NODE_ENV=production vue-cli-service build",
     "lint": "vue-cli-service lint",
