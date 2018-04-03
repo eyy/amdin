@@ -31,10 +31,22 @@
 </template>
 
 <script>
-import { HandleDirective } from 'vue-slicksort'
+import { ContainerMixin, ElementMixin, HandleDirective } from 'vue-slicksort'
 import { emptyDoc } from '../common'
-import SortableList from '../components/sortable-list'
-import SortableItem from '../components/sortable-item'
+
+const SortableList = {
+  mixins: [ ContainerMixin ],
+  render (h) {
+    return h('div', this.$slots.default)
+  }
+}
+
+const SortableItem = {
+  mixins: [ ElementMixin ],
+  render (h) {
+    return h('div', this.$slots.default)
+  }
+}
 
 export default {
   props: {
@@ -74,9 +86,10 @@ export default {
   border-radius 3px
   border 1px solid #e3e3e3
   background white
+
   .controls
     font-size .8em
-    text-align right
+    text-align end
     a.reorder
       cursor move
 </style>
