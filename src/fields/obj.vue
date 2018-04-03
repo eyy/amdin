@@ -38,7 +38,7 @@ th
   padding .7em 1em 1em 0
   vertical-align top
   text-align start
-  .rtl &
+  [dir=rtl] &
     padding .7em 0 1em 1em
 
 span.required

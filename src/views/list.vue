@@ -105,7 +105,7 @@ table#list
   th, td
     text-align start
     padding 0 .5em .5em 0
-    .rtl &
+    [dir=rtl] &
       padding 0 0 .5em .5em
 
   td:first-child
