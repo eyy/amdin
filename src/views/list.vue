@@ -74,13 +74,13 @@ export default {
             text: ___('Delete'),
             onClick (e, toastObject) {
               toastObject.goAway(0)
-              setTimeout(() => del(id, index, title), 0)
+              setTimeout(() => del(id, index, title), 500)
             }
           },
           {
             text: ___('Never mind'),
             onClick (e, toastObject) {
-              toastObject.goAway()
+              toastObject.goAway(0)
             }
           }
         ]

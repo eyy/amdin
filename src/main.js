@@ -11,13 +11,13 @@ Vue.use(translate)
 
 Vue.use(Toasted, {
   singleton: true,
-  duration: 8000,
+  duration: 5000,
   position: 'bottom-center',
   className: 'toasted-amdin',
   action: {
     text: '×',
     onClick (e, toastObject) {
-      toastObject.goAway()
+      toastObject.goAway(0)
     }
   }
 })

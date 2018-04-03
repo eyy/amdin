@@ -11,10 +11,8 @@
       :disabled="saving"
     >
       {{ ___('Save') }}
+      <span v-if="saving">...</span>
     </button>
-    <span v-if="saving" class="info">
-      ...
-    </span>
 
     <div class="error" v-if="errors">
       {{ errors.message }}

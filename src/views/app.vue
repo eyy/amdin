@@ -79,4 +79,7 @@ button
   border-radius 3px !important
   a
     color white !important
+  [dir=rtl] &
+    .action
+      margin 5px 7px 5px -7px
 </style>
