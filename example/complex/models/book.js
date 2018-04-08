@@ -10,18 +10,7 @@ Book.amdin = {
   label: 'ספר',
   plural: 'ספרים',
   list: [ 'title', 'author' ],
-  async listFn () {
-    let docs = await Book.find()
-      .select(Book.amdin.list)
-      .populate('author', 'name')
-      .lean()
-
-    return docs.map(d => {
-      if (d.author)
-        d.author = d.author.name
-      return d
-    })
-  }
+  list_populate: [ 'author' ]
 }
 
 if (!module.parent)

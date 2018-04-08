@@ -15,6 +15,8 @@
     - sortable
     - actions
 
+- is_single
+
 - logo
 
 - validate errors within arrays

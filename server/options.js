@@ -7,7 +7,7 @@ const _ = require('lodash'),
 /*
   Model.amdin = {
     list: Array,
-    listFn: () => Promise,
+    list_populate: Array,
     label: String,
     title: String
   }
@@ -30,19 +30,11 @@ function setModelOptions () {
       opts.plural = opts.plural || _.capitalize(name) + 's'
       opts.title = opts.title || paths.name ? 'name' : 'title'
       opts.list = opts.list || getListPaths(paths)
-      opts.listFn = opts.listFn || defaultListFn(Model)
       opts.paths = getPaths(paths)
 
       debug(name, 'options init')
     }
 }
-
-function defaultListFn (Model) {
-  return () => Model.find()
-    .select(Model.amdin.list)
-    .lean()
-}
-
 function getListPaths (paths) {
   return Object.keys(paths)
     .filter(n => !n.startsWith('_') && !paths[n].$isMongooseArray)
@@ -50,7 +42,7 @@ function getListPaths (paths) {
 
 function getPaths (paths) {
   return _.reduce(paths, (acc, path, name) => {
-    if (name.startsWith('_'))
+    if (name.startsWith('_') || path.options.hide)
       return acc
 
     let opts = _.extend({}, path.options)

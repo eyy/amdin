@@ -27,7 +27,24 @@ api.use('/:model', async (ctx, next) => {
 })
 
 api.get('/:model', async ctx => {
-  ctx.body = await ctx.Model.amdin.listFn()
+  let opts = ctx.Model.amdin,
+    query = ctx.Model.find()
+
+  if (opts.list)
+    query.select(opts.list)
+
+  if (opts.list_populate)
+    query.populate(opts.list_populate)
+
+  let docs = await query.lean()
+
+  if (opts.list_populate)
+    for (let doc of docs)
+      for (let ref of opts.list_populate)
+        if (doc[ref])
+          doc[ref] = doc[ref][ models[ref].amdin.title ]
+
+  ctx.body = docs
 })
 
 api.post('/:model', async ctx => {

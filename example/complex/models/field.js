@@ -21,11 +21,12 @@ const Field = module.exports = mongoose.model('field', {
       message: '{VALUE} is not a valid phone number!'
     },
     required: [ true, 'User phone number required' ]
-  }
+  },
 })
 
 Field.amdin = {
-  list: [ 'title', 'enum' ]
+  list: [ 'title', 'enum' ],
+  sort: 'sort'
 }
 
 if (!module.parent)
