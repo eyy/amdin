@@ -70,9 +70,13 @@ button
     background $red
     &:hover
       background $dark_red
-  .rtl &
+  [dir=rtl] &
     margin-right 0
     margin-left .5em
+
+[dir=rtl] h2 a
+  direction rtl
+  display inline-block
 
 .toasted-amdin
   box-shadow none !important
