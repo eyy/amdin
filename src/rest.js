@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { memoize } from 'lodash'
+import memoize from 'lodash/memoize'
 
 export const root = process.env.NODE_ENV === 'development'
   ? 'http://localhost:3000' + process.env.BASE_URL + 'api/'
@@ -38,6 +38,13 @@ export function getDocs (model) {
 
 export function getRef (model) {
   return go(model + '/ref')
+}
+
+export function sortDocs (model, data) {
+  return go(model + '/sort', {
+    method: 'PUT',
+    body: JSON.stringify(data)
+  })
 }
 
 export function postDoc (model, data) {

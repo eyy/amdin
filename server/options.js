@@ -8,6 +8,7 @@ const _ = require('lodash'),
   Model.amdin = {
     list: Array,
     list_populate: Array,
+    sortable: String,
     label: String,
     title: String
   }
@@ -37,12 +38,15 @@ function setModelOptions () {
 }
 function getListPaths (paths) {
   return Object.keys(paths)
-    .filter(n => !n.startsWith('_') && !paths[n].$isMongooseArray)
+    .filter(n =>
+      !n.startsWith('_') &&
+      !paths[n].$isMongooseArray
+    )
 }
 
 function getPaths (paths) {
   return _.reduce(paths, (acc, path, name) => {
-    if (name.startsWith('_') || path.options.hide)
+    if (name.startsWith('_'))
       return acc
 
     let opts = _.extend({}, path.options)

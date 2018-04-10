@@ -1,6 +1,10 @@
 <template>
   <table>
-    <tr v-for="(path, name) in paths" :key="name">
+    <tr
+      v-for="(path, name) in paths"
+      v-if="!path.hide"
+      :key="name"
+    >
       <th>
         {{ path.label }}
         <span v-if="path.required" class="required">*</span>

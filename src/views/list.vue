@@ -9,35 +9,54 @@
       {{ ___('Add a new $1', opts.label) }}
     </router-link>
 
+    <button
+      @click.prevent="sort"
+      v-if="reordered"
+      :disabled="reordered === 'saving'"
+      class="other"
+    >
+      {{ ___('Save New Order') }}
+    </button>
+
     <p v-if="!docs.length">
       <strong>{{ ___('No Documents.') }}</strong>
     </p>
 
     <table id="list" v-else>
       <tr>
-        <th v-for="path in opts.list" :key="path">
+        <th
+          v-for="path in opts.list"
+          :key="path"
+          :class="{ sort: path === opts.sortable }"
+        >
           {{ opts.paths[path].label }}
         </th>
         <th></th>
       </tr>
 
-      <component
-        :is="opts.sortable ? 'sortable-list' : 'tbody'"
+      <sortable-list
         tag="tbody"
         v-model="docs"
-        lock-axis="y"
         :use-drag-handle="true"
+        @input="reordered = true"
       >
-        <tr v-for="(doc, index) in docs" :key="doc._id">
-          <td v-for="path in opts.list" :key="path">
-            <span v-if="path === opts.sortable" v-handle>
-              {{ doc[path] }}
+        <sortable-tr
+          v-for="(doc, index) in docs"
+          :index="index"
+          :key="doc._id"
+        >
+          <td
+            v-for="path in opts.list"
+            :key="path"
+          >
+            <span v-if="path === opts.sortable" v-handle class="sort">
+              =
             </span>
-            <span v-else-if="path === opts.title">
+            <div v-else-if="path === opts.title" class="title-field">
               <router-link :to="model + '/' + doc._id">
                 {{ doc[path] }}
               </router-link>
-            </span>
+            </div>
             <span v-else>
               {{ doc[path] }}
             </span>
@@ -46,20 +65,23 @@
             <router-link tag="button" :to="model + '/' + doc._id">{{ ___('Edit') }}</router-link>
             <button @click.prevent="del(doc._id, index)" class="danger">{{ ___('Delete') }}</button>
           </td>
-        </tr>
-      </component>
+        </sortable-tr>
+      </sortable-list>
     </table>
   </div>
 </template>
 
 <script>
 import { ContainerMixin, ElementMixin, HandleDirective } from 'vue-slicksort'
-import { getDocs, getOptions, deleteDoc } from '../rest'
+import { getDocs, getOptions, deleteDoc, sortDocs } from '../rest'
 
 const SortableList = {
   mixins: [ ContainerMixin ],
   props: {
-    tag: { type: String, default: 'div' }
+    tag: {
+      type: String,
+      default: 'div'
+    }
   },
   render (h) {
     return h(this.tag, this.$slots.default)
@@ -77,7 +99,8 @@ export default {
   data: () => ({
     model: '',
     opts: {},
-    docs: []
+    docs: [],
+    reordered: false
   }),
   async beforeRouteEnter (to, from, next) {
     let { model } = to.params
@@ -90,6 +113,16 @@ export default {
     })
   },
   methods: {
+    async sort () {
+      this.reordered = 'saving'
+      let res = await sortDocs(
+        this.model,
+        this.docs.map((d, index) => [ d._id, index ])
+      )
+      this.reordered = false
+      if (res.ok)
+        this.$toasted.success(this.___('Saved!'))
+    },
     async del (id, index) {
       let title = this.docs[index][this.opts.title],
         del = this.realDel,
@@ -139,6 +172,14 @@ table#list
     [dir=rtl] &
       padding 0 0 .5em .5em
 
-  td:first-child
-    min-width 10em
+  th.sort
+    font-size 0
+    width 2em
+
+  span.sort
+    user-select none
+    cursor move
+
+.title-field
+  min-width 10em
 </style>

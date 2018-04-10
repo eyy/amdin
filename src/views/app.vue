@@ -25,6 +25,7 @@ export default {
 </script>
 
 <style lang="stylus">
+$font-color = #2d2d45
 $blue = #6180ff
 $dark_blue = #53419a
 $red = #c7324b
@@ -37,7 +38,7 @@ html, input, select, textarea
   font-family Helvetica, Arial, sans-serif
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
-  color #2d2d45
+  color $font-color
   font-size 1em
 
 h1, h2, h3
@@ -73,6 +74,13 @@ button
   [dir=rtl] &
     margin-right 0
     margin-left .5em
+  &.other
+    color $blue
+    border 1px solid $blue
+    background white
+    &:hover
+      color $font-color
+      border-color $font-color
 
 [dir=rtl] h2 a
   direction rtl

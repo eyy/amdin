@@ -18,6 +18,7 @@ api.get('/', ctx => {
   }
 })
 
+// middleware: set ctx.Model
 api.use('/:model', async (ctx, next) => {
   ctx.Model = models[ctx.params.model]
   if (!ctx.Model)
@@ -26,15 +27,22 @@ api.use('/:model', async (ctx, next) => {
   await next()
 })
 
+// get model options and schema
+api.get('/:model/options', ctx => {
+  ctx.body = ctx.Model.amdin
+})
+
+// list documents
 api.get('/:model', async ctx => {
   let opts = ctx.Model.amdin,
     query = ctx.Model.find()
-
-  if (opts.list)
-    query.select(opts.list)
+      .select(opts.list)
 
   if (opts.list_populate)
     query.populate(opts.list_populate)
+
+  if (opts.sortable)
+    query.sort(opts.sortable)
 
   let docs = await query.lean()
 
@@ -47,16 +55,30 @@ api.get('/:model', async ctx => {
   ctx.body = docs
 })
 
+// sorting documents
+api.put('/:model/sort', async ctx => {
+  let data = ctx.request.body,
+    key = ctx.Model.amdin.sortable
+
+  if (!Array.isArray(data) || !key)
+    return ctx.throw(500)
+
+  let sort = await Promise.all(data.map(([ id, value ]) =>
+    ctx.Model.findByIdAndUpdate(id, { [ key ]: value })
+      .then(() => true)
+  ))
+
+  ctx.body = sort.every(val => val === true) ? { ok: true } : sort
+})
+
+// create a new doc
 api.post('/:model', async ctx => {
   ctx.body = await ctx.Model.create(
     preSave(ctx.request.body, ctx.Model)
   )
 })
 
-api.get('/:model/options', ctx => {
-  ctx.body = ctx.Model.amdin
-})
-
+// list documents for ref selection
 api.get('/:model/ref', async ctx => {
   let title = ctx.Model.amdin.title
   let docs = await ctx.Model.find()
@@ -66,6 +88,7 @@ api.get('/:model/ref', async ctx => {
   ctx.body = docs.map(d => [ d._id, d[title] ])
 })
 
+// middleware: throw error if no document
 api.use('/:model/:id', async (ctx, next) => {
   try {
     await next()
@@ -78,10 +101,12 @@ api.use('/:model/:id', async (ctx, next) => {
   }
 })
 
+// get document
 api.get('/:model/:id', async ctx => {
   ctx.body = await ctx.Model.findById(ctx.params.id)
 })
 
+// edit document
 api.put('/:model/:id', async ctx => {
   ctx.body = await ctx.Model.findByIdAndUpdate(
     ctx.params.id,
@@ -92,6 +117,7 @@ api.put('/:model/:id', async ctx => {
   )
 })
 
+// delete document
 api.delete('/:model/:id', async ctx => {
   await ctx.Model.findByIdAndRemove(ctx.params.id)
   ctx.body = { ok: true }

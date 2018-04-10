@@ -12,7 +12,6 @@
     - show picture
     - search / filter
     - pagination
-    - sortable
     - actions
 
 - is_single
