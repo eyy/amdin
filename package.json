@@ -59,7 +59,6 @@
       "one-var": 0,
       "new-parens": 0,
       "curly": 0,
-      "eol-last": 0,
       "yoda": 0,
       "brace-style": [
         1,

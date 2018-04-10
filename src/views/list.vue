@@ -21,28 +21,57 @@
         <th></th>
       </tr>
 
-      <tr v-for="(doc, index) in docs" :key="doc._id">
-        <td v-for="path in opts.list" :key="path">
-          <span v-if="path === opts.title">
-            <router-link :to="model + '/' + doc._id">
+      <component
+        :is="opts.sortable ? 'sortable-list' : 'tbody'"
+        tag="tbody"
+        v-model="docs"
+        lock-axis="y"
+        :use-drag-handle="true"
+      >
+        <tr v-for="(doc, index) in docs" :key="doc._id">
+          <td v-for="path in opts.list" :key="path">
+            <span v-if="path === opts.sortable" v-handle>
               {{ doc[path] }}
-            </router-link>
-          </span>
-          <span v-else>
-            {{ doc[path] }}
-          </span>
-        </td>
-        <td>
-          <router-link tag="button" :to="model + '/' + doc._id">{{ ___('Edit') }}</router-link>
-          <button @click.prevent="del(doc._id, index)" class="danger">{{ ___('Delete') }}</button>
-        </td>
-      </tr>
+            </span>
+            <span v-else-if="path === opts.title">
+              <router-link :to="model + '/' + doc._id">
+                {{ doc[path] }}
+              </router-link>
+            </span>
+            <span v-else>
+              {{ doc[path] }}
+            </span>
+          </td>
+          <td>
+            <router-link tag="button" :to="model + '/' + doc._id">{{ ___('Edit') }}</router-link>
+            <button @click.prevent="del(doc._id, index)" class="danger">{{ ___('Delete') }}</button>
+          </td>
+        </tr>
+      </component>
     </table>
   </div>
 </template>
 
 <script>
+import { ContainerMixin, ElementMixin, HandleDirective } from 'vue-slicksort'
 import { getDocs, getOptions, deleteDoc } from '../rest'
+
+const SortableList = {
+  mixins: [ ContainerMixin ],
+  props: {
+    tag: { type: String, default: 'div' }
+  },
+  render (h) {
+    return h(this.tag, this.$slots.default)
+  }
+}
+
+const SortableTr = {
+  mixins: [ ElementMixin ],
+  render (h) {
+    return h('tr', this.$slots.default)
+  }
+}
 
 export default {
   data: () => ({
@@ -94,7 +123,9 @@ export default {
       this.docs.splice(index, 1)
       this.$toasted.info(this.___('$1 was deleted.', title))
     }
-  }
+  },
+  components: { SortableList, SortableTr },
+  directives: { handle: HandleDirective }
 }
 </script>
 
