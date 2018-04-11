@@ -64,6 +64,14 @@
           <td>
             <router-link tag="button" :to="model + '/' + doc._id">{{ ___('Edit') }}</router-link>
             <button @click.prevent="del(doc._id, index)" class="danger">{{ ___('Delete') }}</button>
+            <button
+              v-for="(action, index) in opts.actions"
+              :key="index"
+              @click.prevent="act(index, doc)"
+              class="other"
+            >
+              {{ action.label }}
+            </button>
           </td>
         </sortable-tr>
       </sortable-list>
@@ -73,7 +81,7 @@
 
 <script>
 import { ContainerMixin, ElementMixin, HandleDirective } from 'vue-slicksort'
-import { getDocs, getOptions, deleteDoc, sortDocs } from '../rest'
+import { getDocs, getOptions, deleteDoc, sortDocs, act } from '../rest'
 
 const SortableList = {
   mixins: [ ContainerMixin ],
@@ -113,6 +121,14 @@ export default {
     })
   },
   methods: {
+    async act (index, doc) {
+      let res = await act(this.model, index, doc._id)
+      if (!res)
+        return
+
+      this.docs = await getDocs(this.model)
+      this.$toasted.success(this.opts.actions[ index ].success)
+    },
     async sort () {
       this.reordered = 'saving'
       let res = await sortDocs(

@@ -6,11 +6,15 @@ const _ = require('lodash'),
 
 /*
   Model.amdin = {
-    list: Array,
-    list_populate: Array,
+    list: [String],
+    list_populate: [String],
     sortable: String,
     label: String,
-    title: String
+    title: String,
+    actions: [{
+      label: String,
+      fn: Function -> Promise(updatedDoc)
+    }]
   }
  */
 

@@ -71,6 +71,15 @@ api.put('/:model/sort', async ctx => {
   ctx.body = sort.every(val => val === true) ? { ok: true } : sort
 })
 
+// activate action
+api.put('/:model/actions/:index/:id', async ctx => {
+  let action = ctx.Model.amdin.actions[ ctx.params.index ]
+  if (!action)
+    ctx.throw(500)
+
+  ctx.body = await action.fn(ctx.params.id)
+})
+
 // create a new doc
 api.post('/:model', async ctx => {
   ctx.body = await ctx.Model.create(

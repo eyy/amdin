@@ -7,7 +7,7 @@ A plug-and-play admin for [Mongoose](http://mongoosejs.com), written with [Koa](
 ```
 npm i --save amdin mongoose koa
 ```
-  
+
 ```js
 const Koa = require('koa'),
   mongoose = require('mongoose'),

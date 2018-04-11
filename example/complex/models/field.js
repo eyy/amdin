@@ -25,8 +25,19 @@ const Field = module.exports = mongoose.model('field', {
 })
 
 Field.amdin = {
-  list: [ 'title', 'enum' ],
-  sort: 'sort'
+  list: [ 'title', 'boolean', 'enum' ],
+  sort: 'sort',
+  actions: [
+    {
+      label: 'Bool',
+      success: 'Bool was inverted!',
+      fn: async function (id) {
+        let doc = await Field.findById(id)
+        doc.boolean = !doc.boolean
+        return doc.save()
+      }
+    }
+  ]
 }
 
 if (!module.parent)

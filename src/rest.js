@@ -70,3 +70,9 @@ export function deleteDoc (model, id) {
     method: 'DELETE'
   })
 }
+
+export function act (model, index, id) {
+  return go(model + '/actions/' + index + '/' + id, {
+    method: 'PUT'
+  })
+}
