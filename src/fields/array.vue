@@ -78,18 +78,3 @@ export default {
   directives: { handle: HandleDirective }
 }
 </script>
-
-<style lang="stylus">
-.box
-  margin-top .5em
-  padding .5em
-  border-radius 3px
-  border 1px solid #e3e3e3
-  background white
-
-  .controls
-    font-size .8em
-    text-align end
-    a.reorder
-      cursor move
-</style>

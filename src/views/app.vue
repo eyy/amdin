@@ -28,8 +28,10 @@ export default {
 $font-color = #2d2d45
 $blue = #6180ff
 $dark_blue = #53419a
+$light_blue = #e8eef6
 $red = #c7324b
 $dark_red = #972551
+$light_red = #f9e2ef
 
 html
   padding 2em
@@ -56,7 +58,8 @@ a
 .error
   color $red
 
-button
+button, .button
+  display inline-block
   font-size .8em
   margin-right .5em
   padding .3em 1em
@@ -81,6 +84,14 @@ button
     &:hover
       color $font-color
       border-color $font-color
+      background $light_blue
+    &.danger
+      color $red
+      border-color $red
+      &:hover
+        color $dark_red
+        border-color $dark_red
+        background $light_red
 
 [dir=rtl] h2 a
   direction rtl
@@ -94,4 +105,17 @@ button
   [dir=rtl] &
     .action
       margin 5px 7px 5px -7px
+
+.box
+  margin-top .5em
+  padding .5em
+  border-radius 3px
+  border 1px solid #e3e3e3
+  background white
+
+  .controls
+    font-size .8em
+    text-align end
+    a.reorder
+      cursor move
 </style>

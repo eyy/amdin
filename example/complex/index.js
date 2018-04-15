@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const Koa = require('koa'),
   logger = require('koa-logger'),
   cors = require('@koa/cors'),

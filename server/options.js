@@ -23,7 +23,7 @@ exports.preSave = preSave
 exports.registry = {}
 
 function setModelOptions () {
-  let models = mongoose.models
+  let { models } = mongoose
 
   for (let name in models)
     if (models.hasOwnProperty(name)) {
@@ -41,6 +41,7 @@ function setModelOptions () {
       debug(name, 'options init')
     }
 }
+
 function getListPaths (paths) {
   return Object.keys(paths)
     .filter(n =>
@@ -67,7 +68,7 @@ function getPaths (paths) {
 }
 
 function preSave (doc, Model) {
-  let paths = Model.amdin.paths
+  let { paths } = Model.amdin
 
   for (let path in paths)
     if (paths.hasOwnProperty(path))

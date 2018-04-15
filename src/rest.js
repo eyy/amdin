@@ -73,7 +73,5 @@ export function deleteDoc (model, id) {
 }
 
 export function act (model, index, id) {
-  return go(model + '/actions/' + index + '/' + id, {
-    method: 'PUT'
-  })
+  return go(model + '/actions/' + index + '/' + id)
 }

@@ -1,8 +1,12 @@
 const Router = require('koa-router'),
+  body = require('koa-body'),
   { models } = require('mongoose'),
-  { preSave, registry } = require('./options')
+  { preSave, registry } = require('./options'),
+  upload = require('./upload')
 
 const router = module.exports = new Router
+
+router.use('/api/upload', upload.routes())
 
 const api = new Router
 
@@ -57,7 +61,7 @@ api.get('/:model', async ctx => {
 })
 
 // sorting documents
-api.put('/:model/sort', async ctx => {
+api.put('/:model/sort', body(), async ctx => {
   let data = ctx.request.body,
     key = ctx.Model.amdin.sortable
 
@@ -73,7 +77,7 @@ api.put('/:model/sort', async ctx => {
 })
 
 // activate action
-api.put('/:model/actions/:index/:id', async ctx => {
+api.get('/:model/actions/:index/:id', async ctx => {
   let action = ctx.Model.amdin.actions[ ctx.params.index ]
   if (!action)
     ctx.throw(500)
@@ -82,7 +86,7 @@ api.put('/:model/actions/:index/:id', async ctx => {
 })
 
 // create a new doc
-api.post('/:model', async ctx => {
+api.post('/:model', body(), async ctx => {
   ctx.body = await ctx.Model.create(
     preSave(ctx.request.body, ctx.Model)
   )
@@ -120,7 +124,7 @@ api.get('/:model/:id', async ctx => {
 })
 
 // edit document
-api.put('/:model/:id', async ctx => {
+api.put('/:model/:id', body(), async ctx => {
   if (!ctx.Model.amdin.single)
     ctx.body = await ctx.Model.findByIdAndUpdate(
       ctx.params.id,

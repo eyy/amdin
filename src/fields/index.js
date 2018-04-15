@@ -7,6 +7,7 @@ import number from './number'
 import date from './date'
 import ref from './ref'
 import plain from './plain'
+import picture from './picture'
 
 export function matchField (path) {
   let field = path.field || path.type.toLowerCase()
@@ -34,6 +35,9 @@ export function matchField (path) {
 
   if ('date' === field)
     return date
+
+  if ('picture' === field)
+    return picture
 
   return text
 }

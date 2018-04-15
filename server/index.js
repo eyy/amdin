@@ -1,7 +1,6 @@
 const Koa = require('koa'),
   serve = require('koa-static'),
   error = require('koa-json-error'),
-  body = require('koa-body'),
   mount = require('koa-mount'),
   path = require('path'),
   routes = require('./routes'),
@@ -23,5 +22,4 @@ const app = new Koa
 
 app.use(serve(path.resolve(__dirname, '../dist')))
 app.use(error())
-app.use(body())
 app.use(routes.routes())

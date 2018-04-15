@@ -6,7 +6,7 @@
     </h2>
 
     <router-link tag="button" :to="model + '/new'">
-      {{ ___('Add a new $1', opts.label) }}
+      &plus; {{ ___('Add a new $1', opts.label) }}
     </router-link>
 
     <button

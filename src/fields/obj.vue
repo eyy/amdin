@@ -6,8 +6,7 @@
       :key="name"
     >
       <th>
-        {{ path.label }}
-        <span v-if="path.required" class="required">*</span>
+        {{ path.label }}&nbsp;<span v-if="path.required" class="required" title="Required">*</span>
       </th>
       <td>
         <component

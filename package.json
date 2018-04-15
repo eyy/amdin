@@ -4,7 +4,7 @@
   "main": "server/index",
   "scripts": {
     "start": "npm run koa & npm run vue",
-    "koa": "DEBUG=amdin node example/complex/index",
+    "koa": "DEBUG=amdin nodemon example/complex/index",
     "vue": "vue-cli-service serve --open",
     "build": "NODE_ENV=production vue-cli-service build",
     "lint": "vue-cli-service lint",
@@ -26,6 +26,7 @@
     "koa-static": "^4.0.2",
     "lodash": "^4.17.5",
     "vue": "^2.5.13",
+    "vue-clip": "^1.0.0",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
@@ -35,14 +36,18 @@
     "@vue/cli-service": "^3.0.0-beta.6",
     "@vue/eslint-config-standard": "^3.0.0-beta.6",
     "@vue/test-utils": "^1.0.0-beta.13",
+    "cloudinary": "^1.11.0",
+    "dotenv": "^5.0.1",
     "koa-logger": "^3.2.0",
     "mongoose": "^5.0.13",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "tape": "^4.9.0",
+    "vue-cloudinary": "^0.2.1",
     "vue-slicksort": "^0.1.6",
     "vue-template-compiler": "^2.5.13",
-    "vue-toasted": "^1.1.24"
+    "vue-toasted": "^1.1.24",
+    "vue-upload-component": "^2.8.5"
   },
   "babel": {
     "presets": [
