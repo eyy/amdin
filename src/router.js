@@ -4,6 +4,7 @@ import home from './views/home'
 import list from './views/list'
 import create from './views/create'
 import edit from './views/edit'
+import single from './views/single'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/:model/new',
       name: 'create',
       component: create
+    },
+    {
+      path: '/:model/single',
+      name: 'single',
+      component: single
     },
     {
       path: '/:model/:id',

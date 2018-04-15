@@ -12,7 +12,8 @@ api.get('/', ctx => {
       .map(m => ({
         name: m,
         label: models[ m ].amdin.label,
-        plural: models[ m ].amdin.plural
+        plural: models[ m ].amdin.plural,
+        single: models[ m ].amdin.single
       })),
     conf: registry
   }
@@ -112,18 +113,34 @@ api.use('/:model/:id', async (ctx, next) => {
 
 // get document
 api.get('/:model/:id', async ctx => {
-  ctx.body = await ctx.Model.findById(ctx.params.id)
+  if (!ctx.Model.amdin.single)
+    ctx.body = await ctx.Model.findById(ctx.params.id)
+  else
+    ctx.body = (await ctx.Model.findOne()) || {}
 })
 
 // edit document
 api.put('/:model/:id', async ctx => {
-  ctx.body = await ctx.Model.findByIdAndUpdate(
-    ctx.params.id,
-    preSave(ctx.request.body, ctx.Model),
-    {
-      runValidators: true
-    }
-  )
+  if (!ctx.Model.amdin.single)
+    ctx.body = await ctx.Model.findByIdAndUpdate(
+      ctx.params.id,
+      preSave(ctx.request.body, ctx.Model),
+      {
+        'new': true,
+        runValidators: true
+      }
+    )
+  else
+    ctx.body = await ctx.Model.findOneAndUpdate(
+      {},
+      preSave(ctx.request.body, ctx.Model),
+      {
+        'new': true,
+        runValidators: true,
+        upsert: true,
+        setDefaultsOnInsert: true
+      }
+    )
 })
 
 // delete document

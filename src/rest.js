@@ -14,6 +14,7 @@ function go (path = '', opts = {}) {
   return fetch(root + path, opts)
     .then(res => res.json())
     .then(res => {
+      // console.log(path, res)
       if (res.status === 500 && res.name !== 'ValidationError')
         return Promise.reject(res)
       return res
@@ -54,11 +55,11 @@ export function postDoc (model, data) {
   })
 }
 
-export function getDoc (model, id) {
+export function getDoc (model, id = 'first') {
   return go(model + '/' + id)
 }
 
-export function putDoc (model, id, data) {
+export function putDoc (model, id = 'first', data) {
   return go(model + '/' + id, {
     method: 'PUT',
     body: JSON.stringify(data)

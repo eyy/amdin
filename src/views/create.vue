@@ -30,6 +30,9 @@ export default {
     let { model } = to.params
     let opts = await getOptions(model)
 
+    if (opts.single)
+      return next('/' + model + '/single')
+
     next(vm => {
       vm.model = model
       vm.opts = opts

@@ -4,6 +4,7 @@ const Koa = require('koa'),
   mongoose = require('mongoose'),
   admin = require('../../server')
 
+require('./models/single')
 require('./models/book')
 require('./models/author')
 require('./models/field')

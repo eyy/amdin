@@ -31,6 +31,7 @@ function setModelOptions () {
         paths = Model.schema.paths,
         opts = Model.amdin = Model.amdin || {}
 
+      opts.single = opts.single || false
       opts.label = opts.label || _.capitalize(name)
       opts.plural = opts.plural || _.capitalize(name) + 's'
       opts.title = opts.title || paths.name ? 'name' : 'title'
