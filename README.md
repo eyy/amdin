@@ -2,8 +2,6 @@
 
 A plug-and-play admin for [Mongoose](http://mongoosejs.com), written with [Koa](http://koajs.com) and [Vue](https://vuejs.org).
 
-<table><tr><td>
-
 ```
 npm i --save amdin mongoose koa
 ```
@@ -31,11 +29,5 @@ app.listen(3000, () => {
   console.log('running on http://localhost:' + 3000)
 })
 ```
-</td><td>
-
-```
-open http://localhost:3000/admin
-```
 
 ![The result.](https://i.imgur.com/Wah72V8.png)
-</td></tr></table>
