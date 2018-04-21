@@ -1,12 +1,12 @@
 const Router = require('koa-router'),
   body = require('koa-body'),
   { models } = require('mongoose'),
-  { preSave, registry } = require('./options'),
-  upload = require('./upload')
+  { preSave, registry } = require('./options')
+  // upload = require('./upload')
 
 const router = module.exports = new Router
 
-router.use('/api/upload', upload.routes())
+// router.use('/api/upload', upload.routes())
 
 const api = new Router
 

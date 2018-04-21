@@ -8,10 +8,12 @@ const Field = module.exports = mongoose.model('field', {
   date: Date,
   num: { type: Number, min: 5, max: 42 },
   object: {
-    nested: { type: String, field: 'textarea' }
+    nested: { type: String, field: 'textarea' },
+    picture: { type: Object, field: 'picture' }
   },
   array: [ {
-    string: { type: String, default: 'Yes', maxlength: 10 }
+    string: { type: String, default: 'Yes', maxlength: 10 },
+    picture: { type: Object, field: 'picture' }
   } ],
   enum: { type: String, enum: [ 'Yes', 'No', 'Maybe' ], default: 'Maybe' },
   phone: {
@@ -22,6 +24,7 @@ const Field = module.exports = mongoose.model('field', {
     },
     required: [ true, 'User phone number required' ]
   },
+  picture: { type: Object, field: 'picture' }
 })
 
 Field.amdin = {

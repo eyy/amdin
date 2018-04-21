@@ -40,7 +40,8 @@
         :use-drag-handle="true"
         @input="reordered = true"
       >
-        <sortable-tr
+        <sortable-item
+          tag="tr"
           v-for="(doc, index) in docs"
           :index="index"
           :key="doc._id"
@@ -50,7 +51,7 @@
             :key="path"
           >
             <span v-if="path === opts.sortable" v-handle class="sort">
-              =
+              &updownarrow;
             </span>
             <div v-else-if="path === opts.title" class="title-field">
               <router-link :to="model + '/' + doc._id">
@@ -73,35 +74,15 @@
               {{ action.label }}
             </button>
           </td>
-        </sortable-tr>
+        </sortable-item>
       </sortable-list>
     </table>
   </div>
 </template>
 
 <script>
-import { ContainerMixin, ElementMixin, HandleDirective } from 'vue-slicksort'
+import { SortableList, SortableItem, HandleDirective } from '../components/sort'
 import { getDocs, getOptions, deleteDoc, sortDocs, act } from '../rest'
-
-const SortableList = {
-  mixins: [ ContainerMixin ],
-  props: {
-    tag: {
-      type: String,
-      default: 'div'
-    }
-  },
-  render (h) {
-    return h(this.tag, this.$slots.default)
-  }
-}
-
-const SortableTr = {
-  mixins: [ ElementMixin ],
-  render (h) {
-    return h('tr', this.$slots.default)
-  }
-}
 
 export default {
   data: () => ({
@@ -176,7 +157,7 @@ export default {
       this.$toasted.info(this.___('$1 was deleted.', title))
     }
   },
-  components: { SortableList, SortableTr },
+  components: { SortableList, SortableItem },
   directives: { handle: HandleDirective }
 }
 </script>

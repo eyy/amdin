@@ -14,6 +14,7 @@ module.exports = function init (options = {}) {
     : { _name: 'English' }
 
   registry.title = options.title
+  registry.cloudinary = options.cloudinary
 
   return mount('/admin', app)
 }

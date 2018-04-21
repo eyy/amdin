@@ -1,6 +1,7 @@
 const _ = require('lodash'),
   debug = require('debug')('amdin'),
-  mongoose = require('mongoose')
+  mongoose = require('mongoose'),
+  cloudinary = require('cloudinary')
 
 // init model options
 
@@ -20,6 +21,7 @@ const _ = require('lodash'),
 
 exports.setModelOptions = setModelOptions
 exports.preSave = preSave
+exports.runPaths = runPaths
 exports.registry = {}
 
 function setModelOptions () {
@@ -36,7 +38,7 @@ function setModelOptions () {
       opts.plural = opts.plural || _.capitalize(name) + 's'
       opts.title = opts.title || paths.name ? 'name' : 'title'
       opts.list = opts.list || getListPaths(paths)
-      opts.paths = getPaths(paths)
+      opts.paths = getPaths(paths, Model)
 
       debug(name, 'options init')
     }
@@ -68,12 +70,64 @@ function getPaths (paths) {
 }
 
 function preSave (doc, Model) {
-  let { paths } = Model.amdin
+  let deletePictures = []
 
-  for (let path in paths)
-    if (paths.hasOwnProperty(path))
-      if (paths[ path ].editable === false)
-        delete doc[ path ]
+  for (let [ name, path ] of runPaths(Model.amdin.paths)) {
+    if (path.editable === false)
+      delete doc[ name ]
+
+    if (path.field === 'picture' && doc[ name ].length) {
+      doc[ name ] = doc[ name ].filter(pic => {
+        if (!pic || !pic.public_id)
+          return false
+
+        if (pic.deleted) {
+          deletePictures.push(pic.public_id)
+          return false
+        }
+        return true
+      })
+      console.log(doc[ name ])
+    }
+  }
+
+  if (deletePictures.length)
+    cloudinary.v2.api.delete_resources(deletePictures, function (err) {
+      if (err)
+        console.error(err)
+      console.log('deleted ' + deletePictures.length + ' pictures')
+    })
 
   return doc
 }
+
+function * runPaths (paths, parent = '') {
+  for (let name in paths)
+    if (paths.hasOwnProperty(name) && !name.startsWith('_')) {
+      let path = paths[ name ]
+      if (path.$isMongooseArray)
+        for (let p of runPaths(path.schema.paths, parent ? parent + '.' + name : name))
+          yield p
+      else
+        yield [ name, path, parent ]
+    }
+}
+
+if (!module.parent) (async () => {
+  let paths = {
+    a: 'String',
+    b: 'String',
+    c: {
+      $isMongooseArray: true,
+      schema: {
+        paths: {
+          a: 'String',
+          b: 'String'
+        }
+      }
+    }
+  }
+
+  for (let p of runPaths(paths))
+    console.log(p)
+})()

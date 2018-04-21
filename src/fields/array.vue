@@ -31,29 +31,12 @@
 </template>
 
 <script>
-import { ContainerMixin, ElementMixin, HandleDirective } from 'vue-slicksort'
+import { SortableList, SortableItem, HandleDirective } from '../components/sort'
 import { emptyDoc } from '../common'
-
-const SortableList = {
-  mixins: [ ContainerMixin ],
-  render (h) {
-    return h('div', this.$slots.default)
-  }
-}
-
-const SortableItem = {
-  mixins: [ ElementMixin ],
-  render (h) {
-    return h('div', this.$slots.default)
-  }
-}
 
 export default {
   props: {
-    value: {
-      type: Array,
-      'default': () => []
-    },
+    value: { type: Array, 'default': () => [] },
     path: Object
   },
   computed: {

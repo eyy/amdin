@@ -10,7 +10,7 @@
       :paths="opts.paths"
       :doc="doc"
       :submit="d => postDoc(model, d)"
-      @saved="res => $router.push({ name: 'edit', params: { model, id: res._id } })"
+      @saved="saved"
     />
   </div>
 </template>
@@ -39,7 +39,15 @@ export default {
       vm.doc = emptyDoc(opts.paths)
     })
   },
-  methods: { postDoc },
+  methods: {
+    postDoc,
+    saved (res) {
+      this.$router.push({
+        name: 'edit',
+        params: { model: this.model, id: res._id }
+      })
+    }
+  },
   components: { AForm }
 }
 </script>

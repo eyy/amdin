@@ -10,6 +10,7 @@
       :paths="opts.paths"
       :doc="doc"
       :submit="d => putDoc(model, id, d)"
+      @saved="d => doc = d"
     />
   </div>
 </template>

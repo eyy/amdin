@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="save">
+  <form @submit.prevent="save" :class="{ saving }">
     <obj
       :paths="paths"
       :value="doc"
@@ -29,18 +29,33 @@ export default {
   },
   data: () => ({
     errors: {},
-    saving: false
+    saving: false,
+    preSave: []
   }),
+  provide: function () {
+    return {
+      preSave: this.preSave
+    }
+  },
   methods: {
     async save () {
+      let { ___ } = this
+
       this.saving = true
+      try {
+        await Promise.all(this.preSave.map(fn => fn()))
+      }
+      catch (err) {
+        console.error('preSave error', err)
+        return this.$toasted.error(___('There was a problem :('))
+      }
+
       let res = await this.submit(this.doc)
       this.saving = false
-      let ___ = this.___
 
       if (res.status === 500 && res.name === 'ValidationError') {
         this.errors = res.errors
-        console.error('error', res)
+        console.error('submit error', res)
         this.$toasted.error(___('There was a problem :('))
       }
       else {
@@ -76,4 +91,7 @@ button[type=submit]
   margin-top 1em
   &[disabled]
     background lightslategray !important
+
+.saving
+  cursor progress
 </style>

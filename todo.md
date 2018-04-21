@@ -2,10 +2,8 @@
 
 - fields
     - upload
-        - single file
-        - multiple
-            - reorder
         - resize picture
+        - work with validation errors
     - wysiwyg
 
 - list view

@@ -4,7 +4,7 @@ const Book = module.exports = mongoose.model('book', {
   title: { type: String, required: true, label: 'כותרת' },
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'author', label: 'מחבר' },
   created: { type: Date, editable: false, default: Date.now, label: 'תאריך' },
-  cover: { type: Object, field: 'picture', label: 'כריכה' }
+  cover: { type: Object, field: 'picture', label: 'כריכה', multiple: true }
 })
 
 Book.amdin = {

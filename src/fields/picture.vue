@@ -1,101 +1,169 @@
 <template>
   <div>
-    <div v-if="value">
-      <div v-for="file in value" :key="file.url">
-        <img :src="file.url" height="80" width="auto" />
-        <!--<button type="button" class="other danger">{{ ___('Delete') }}</button>-->
+    <div v-if="!conf" class="error">
+        {{ ___('No Cloudinary Account.') }}
+    </div>
+
+    <div v-else>
+      <div v-if="multiple || !value.length && !files.length">
+        <input
+          type="file"
+          :multiple="multiple"
+          accept="image/*"
+          style="display:none"
+          @change="show"
+          axis="xy"
+          ref="input"
+        />
+        <button
+          class="other"
+          @click.prevent="$refs.input.click()"
+        >
+          + {{ ___('Select File') }}
+        </button>
       </div>
-    </div>
 
-    <div v-if="files.length">
-      <span v-for="file in files" :key="file.id">
-        <img class="" v-if="file.thumb" :src="file.thumb" height="80" width="auto" />
-        <!--<span>{{ file.name }}</span> - -->
-        <!--<span>{{ file.size | formatSize }}</span> - -->
-        &nbsp;
-        <span v-if="file.error">{{file.error}}</span>
-        <span v-else-if="file.success">success</span>
-        <span v-else-if="file.active">active</span>
-      </span>
-    </div>
+      <div class="pictures">
+        <div v-for="(file, index) in files" :key="index" class="picture">
+          <img :src="file.blob" height="120" />
+          <span>
+            <a href="#" @click.prevent="files.splice(index, 1)" :title="___('Delete')">&times;</a>
+          </span>
+        </div>
+      </div>
 
-    <file-upload
-      v-model="files"
-      :post-action="action"
-      :multiple="multiple"
-      class="button other"
-      extensions="gif,jpg,jpeg,png"
-      accept="image/png,image/gif,image/jpeg"
-      :size="1024 * 1024 * 10"
-      @input-filter="filter"
-      @input="ok"
-      ref="upload"
-    >
-      + {{ ___('Select File') }}
-    </file-upload>
-
-    <div v-if="files.length">
-      <button
-        type="button"
-        v-if="!$refs.upload || !$refs.upload.active"
-        @click.prevent="$refs.upload.active = true"
+      <sortable-list
+        tag="ul"
+        v-if="value"
+        v-model="here"
+        class="pictures"
+        :use-drag-handle="true"
       >
-        &uparrow;
-        {{ ___('Upload') }}
-      </button>
-
-      <button
-        type="button"
-        v-else
-        @click.prevent="$refs.upload.active = false"
-      >
-        &squarf;
-        {{ ___('Stop Upload') }}
-      </button>
+        <sortable-item
+          tag="li"
+          v-for="(file, index) in here"
+          :index="index"
+          :key="file.public_id"
+          :class="{ picture: true, deleted: file.deleted }"
+        >
+          <img v-if="file.url" :src="resize(file.url, 120)"/>
+          <span>
+            <a href="#" v-handle :title="___('Order')" v-show="value.length > 1">&updownarrow;</a>
+            <a href="#" @click.prevent="del(index)" class="reorder" :title="___('Delete')">&times;</a>
+          </span>
+        </sortable-item>
+      </sortable-list>
     </div>
   </div>
 </template>
 
 <script>
-import FileUpload from 'vue-upload-component'
-import { root } from '../rest'
+import map from 'lodash/map'
+import { SortableList, SortableItem, HandleDirective } from '../components/sort'
+import { start } from '../rest'
+
+const blob = (window.URL || window.webkitURL).createObjectURL || (() => '')
 
 export default {
-  props: [ 'value', 'path' ],
+  inject: [ 'preSave' ],
+  props: {
+    value: { type: Array, 'default': () => [] },
+    path: Object
+  },
   data: () => ({
     files: [],
-    action: root + 'upload',
-    multiple: false
+    conf: {}
   }),
-  components: { FileUpload },
+  computed: {
+    here: {
+      get () {
+        return this.value
+      },
+      set (val) {
+        this.$emit('input', val)
+      }
+    },
+    multiple () {
+      return this.path.multiple
+    }
+  },
+  async created () {
+    let { conf: { cloudinary } } = await start()
+    this.preSave.push(() => this.upload())
+    this.conf = cloudinary
+  },
   methods: {
-    filter (newFile, oldFile) {
-      if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
-        // Create a blob field
-        newFile.blob = ''
-        let URL = window.URL || window.webkitURL
-        if (URL && URL.createObjectURL) {
-          newFile.blob = URL.createObjectURL(newFile.file)
-        }
+    show () {
+      this.files = map(this.$refs.input.files, f => ({
+        name: f.name,
+        file: f,
+        blob: blob(f)
+      })).concat(this.files)
+    },
+    del (index) {
+      let file = this.value[ index ]
+      file.deleted = !file.deleted
+      this.here.splice(index, 1, file)
+    },
+    async upload () {
+      if (!this.conf || !this.files.length)
+        return
 
-        // Thumbnails
-        newFile.thumb = ''
-        if (newFile.blob && newFile.type.substr(0, 6) === 'image/') {
-          newFile.thumb = newFile.blob
+      let { name, preset } = this.conf
+      let file
+
+      while (file = this.files.pop()) {
+        let data = new FormData()
+        data.append('upload_preset', preset)
+        data.append('file', file.file)
+
+        let res = await fetch(`https://api.cloudinary.com/v1_1/${name}/upload`, {
+          method: 'POST',
+          body: data
+        })
+          .then(res => res.json())
+
+        if (res.error) {
+          console.error('upload error', res.error)
+        }
+        else {
+          console.log('picture uploaded', res)
+          this.$emit('input', [ res ].concat(this.here))
         }
       }
     },
-    ok (files) {
-      let uploadedFiles = files.filter(f => f.response.url).map(f => f.response)
-      this.$emit('input', this.value.concat(uploadedFiles))
+    resize (url, h) {
+      let tokens = url.split('/')
+      tokens.splice(-2, 0, `h_${h},c_scale`)
+      return tokens.join('/')
     }
-  }
+  },
+  components: { SortableList, SortableItem },
+  directives: { handle: HandleDirective }
 }
 </script>
 
-<style lang="stylus" scoped>
-/*img*/
-  /*padding 3px*/
-  /*border 1px solid lightgrey*/
-  /*border-radius 3px*/
+<style lang="stylus">
+.saving
+  cursor clo
+.pictures
+  margin-top .5em
+  user-select none
+  padding-left 0
+.picture
+  position relative
+  marign-end .5em
+  list-style none
+  span
+    position absolute
+    left 0
+    top 0
+  a
+    background white
+    padding .2em
+    text-decoration none
+  &.deleted
+    img
+      filter grayscale(1) blur(2px)
+      opacity .5
 </style>
