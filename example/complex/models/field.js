@@ -16,15 +16,15 @@ const Field = module.exports = mongoose.model('field', {
     picture: { type: Object, field: 'picture' }
   } ],
   boolean: Boolean,
-  enum: { type: String, enum: [ 'Yes', 'No', 'Maybe' ], default: 'Maybe' }
-  // phone: {
-  //   type: String,
-  //   validate: {
-  //     validator: (v) => phoneRegex.test(v),
-  //     message: '{VALUE} is not a valid phone number!'
-  //   },
-  //   required: [ true, 'User phone number required' ]
-  // }
+  enum: { type: String, enum: [ 'Yes', 'No', 'Maybe' ], default: 'Maybe' },
+  phone: {
+    type: String,
+    validate: {
+      validator: (v) => phoneRegex.test(v),
+      message: '{VALUE} is not a valid phone number!'
+    },
+    required: [ true, 'User phone number required' ]
+  }
 })
 
 Field.amdin = {

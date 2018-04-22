@@ -15,7 +15,7 @@
         :key="doc._id"
         class="box"
       >
-        <div class="controls">
+        <div class="box-controls">
           <a href="#" v-handle v-show="here.length > 1" class="reorder" :title="___('Order')">&updownarrow;</a>
           <a href="#" @click.prevent="remove(index)" :title="___('Remove')">&times;</a>
         </div>
@@ -61,7 +61,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.controls a
+.box-controls a
   display inline-block
   padding 0 .4em
   text-decoration none

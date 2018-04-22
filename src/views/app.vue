@@ -97,6 +97,10 @@ button, .button
   direction rtl
   display inline-block
 
+#app
+  max-width 900px
+  margin 0 auto
+
 .toasted-amdin
   box-shadow none !important
   border-radius 3px !important
@@ -113,8 +117,7 @@ button, .button
   border 1px solid #e3e3e3
   background white
 
-  .controls
-    font-size .8em
+  .box-controls
     text-align end
     a.reorder
       cursor move

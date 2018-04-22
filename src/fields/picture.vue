@@ -31,9 +31,9 @@
       <div class="pictures" v-if="files.length">
         <div v-for="(file, index) in files" :key="index" class="picture">
           <img :src="file.blob" height="120" />
-          <div class="controls">
+          <span>
             <a href="#" @click.prevent="files.splice(index, 1)" :title="___('Delete')">&times;</a>
-          </div>
+          </span>
         </div>
       </div>
 
@@ -52,7 +52,7 @@
           :class="{ picture: true, deleted: file.deleted }"
         >
           <img v-if="file.url" :src="resize(file.url, 120)"/>
-          <span class="controls">
+          <span>
             <a href="#" v-handle :title="___('Order')" v-show="here.length > 1">&updownarrow;</a>
             <a href="#" @click.prevent="del(index)" class="reorder" :title="___('Delete')">&times;</a>
           </span>
@@ -157,7 +157,7 @@ export default {
   position relative
   marign-end .5em
   list-style none
-  .controls
+  span
     position absolute
     left 0
     top 0
