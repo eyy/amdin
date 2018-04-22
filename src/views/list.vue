@@ -58,9 +58,11 @@
                 {{ doc[path] }}
               </router-link>
             </div>
-            <span v-else>
-              {{ doc[path] }}
-            </span>
+            <plain
+              v-else
+              :value="doc[path]"
+              :path="opts.paths[path]"
+            />
           </td>
           <td>
             <router-link tag="button" :to="model + '/' + doc._id">{{ ___('Edit') }}</router-link>
@@ -83,6 +85,7 @@
 <script>
 import { SortableList, SortableItem, HandleDirective } from '../components/sort'
 import { getDocs, getOptions, deleteDoc, sortDocs, act } from '../rest'
+import Plain from '../fields/plain'
 
 export default {
   data: () => ({
@@ -157,7 +160,7 @@ export default {
       this.$toasted.info(this.___('$1 was deleted.', title))
     }
   },
-  components: { SortableList, SortableItem },
+  components: { SortableList, SortableItem, Plain },
   directives: { handle: HandleDirective }
 }
 </script>
