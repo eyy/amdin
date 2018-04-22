@@ -1,13 +1,13 @@
 {
   "name": "amdin",
-  "version": "0.2.0",
+  "version": "0.2.5",
   "main": "server/index",
   "license": "Apache-2.0",
   "scripts": {
     "start": "npm run koa & npm run vue",
     "koa": "DEBUG=amdin cd example/complex && nodemon index",
     "vue": "vue-cli-service serve --open",
-    "build": "NODE_ENV=production vue-cli-service build",
+    "build": "npm run lint && NODE_ENV=production vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test": "tape tests"
   },
