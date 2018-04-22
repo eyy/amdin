@@ -5,36 +5,41 @@
     </div>
 
     <div v-else>
-      <div v-if="multiple || !value.length && !files.length">
-        <input
-          type="file"
-          :multiple="multiple"
-          accept="image/*"
-          style="display:none"
-          @change="show"
-          axis="xy"
-          ref="input"
-        />
-        <button
-          class="other"
-          @click.prevent="$refs.input.click()"
-        >
-          + {{ ___('Select File') }}
-        </button>
-      </div>
+      <input
+        type="file"
+        :multiple="multiple"
+        accept="image/*"
+        style="display:none"
+        @change="show"
+        axis="xy"
+        ref="input"
+      />
+      <button
+        v-if="multiple || !here.length && !files.length"
+        class="other"
+        @click.prevent="$refs.input.click()"
+      >
+        + {{ ___('Select Files') }}
+      </button>
+      <button
+        @click.prevent="upload"
+        v-if="files.length"
+      >
+        &uparrow; {{ ___('Upload') }}
+      </button>
 
-      <div class="pictures">
+      <div class="pictures" v-if="files.length">
         <div v-for="(file, index) in files" :key="index" class="picture">
           <img :src="file.blob" height="120" />
-          <span>
+          <div class="controls">
             <a href="#" @click.prevent="files.splice(index, 1)" :title="___('Delete')">&times;</a>
-          </span>
+          </div>
         </div>
       </div>
 
       <sortable-list
         tag="ul"
-        v-if="value"
+        v-if="here.length"
         v-model="here"
         class="pictures"
         :use-drag-handle="true"
@@ -47,8 +52,8 @@
           :class="{ picture: true, deleted: file.deleted }"
         >
           <img v-if="file.url" :src="resize(file.url, 120)"/>
-          <span>
-            <a href="#" v-handle :title="___('Order')" v-show="value.length > 1">&updownarrow;</a>
+          <span class="controls">
+            <a href="#" v-handle :title="___('Order')" v-show="here.length > 1">&updownarrow;</a>
             <a href="#" @click.prevent="del(index)" class="reorder" :title="___('Delete')">&times;</a>
           </span>
         </sortable-item>
@@ -77,7 +82,7 @@ export default {
   computed: {
     here: {
       get () {
-        return this.value
+        return this.value || []
       },
       set (val) {
         this.$emit('input', val)
@@ -112,7 +117,7 @@ export default {
       let { name, preset } = this.conf
       let file
 
-      while (file = this.files.pop()) {
+      while (file = this.files.pop()) { // eslint-disable-line
         let data = new FormData()
         data.append('upload_preset', preset)
         data.append('file', file.file)
@@ -144,17 +149,15 @@ export default {
 </script>
 
 <style lang="stylus">
-.saving
-  cursor clo
 .pictures
-  margin-top .5em
+  margin .5em 0 0
   user-select none
   padding-left 0
 .picture
   position relative
   marign-end .5em
   list-style none
-  span
+  .controls
     position absolute
     left 0
     top 0

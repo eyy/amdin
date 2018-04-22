@@ -4,27 +4,27 @@ const phoneRegex = /\d{3}-?\d{3}-?\d{4}/
 
 const Field = module.exports = mongoose.model('field', {
   title: { type: String, required: true, maxlength: 10 },
-  boolean: Boolean,
-  date: Date,
-  num: { type: Number, min: 5, max: 42 },
-  object: {
-    nested: { type: String, field: 'textarea' },
-    picture: { type: Object, field: 'picture' }
-  },
+  // date: Date,
+  // num: { type: Number, min: 5, max: 42 },
+  // object: {
+  //   picture: { type: Object, field: 'picture' },
+  //   nested: { type: String, field: 'textarea' }
+  // },
+  picture: { type: Object, field: 'picture' },
   array: [ {
     string: { type: String, default: 'Yes', maxlength: 10 },
     picture: { type: Object, field: 'picture' }
   } ],
-  enum: { type: String, enum: [ 'Yes', 'No', 'Maybe' ], default: 'Maybe' },
-  phone: {
-    type: String,
-    validate: {
-      validator: (v) => phoneRegex.test(v),
-      message: '{VALUE} is not a valid phone number!'
-    },
-    required: [ true, 'User phone number required' ]
-  },
-  picture: { type: Object, field: 'picture' }
+  boolean: Boolean,
+  enum: { type: String, enum: [ 'Yes', 'No', 'Maybe' ], default: 'Maybe' }
+  // phone: {
+  //   type: String,
+  //   validate: {
+  //     validator: (v) => phoneRegex.test(v),
+  //     message: '{VALUE} is not a valid phone number!'
+  //   },
+  //   required: [ true, 'User phone number required' ]
+  // }
 })
 
 Field.amdin = {

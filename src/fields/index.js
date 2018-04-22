@@ -10,7 +10,7 @@ import plain from './plain'
 import picture from './picture'
 
 export function matchField (path) {
-  let field = path.field || path.type.toLowerCase()
+  let field = path.field || (path.type || 'obj').toLowerCase()
 
   if (path.editable === false)
     return plain
@@ -39,5 +39,8 @@ export function matchField (path) {
   if ('picture' === field)
     return picture
 
-  return text
+  if ('string' === field)
+    return text
+
+  return 'obj'
 }

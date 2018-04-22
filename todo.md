@@ -2,7 +2,6 @@
 
 - fields
     - upload
-        - resize picture
         - work with validation errors
     - wysiwyg
 
@@ -10,7 +9,6 @@
     - show picture
     - search / filter
     - pagination
-    - actions
 
 - logo
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <button type="button" @click.prevent="add">
-      {{ ___('Add') }}
+      &plus; {{ ___('Add') }}
     </button>
 
     <sortable-list
@@ -16,13 +16,11 @@
         class="box"
       >
         <div class="controls">
-          <span v-show="here.length > 1">
-            <a href="#" v-handle class="reorder">{{ ___('Order') }}</a>,
-          </span>
-          <a href="#" @click.prevent="remove(index)">{{ ___('Remove') }}</a>
+          <a href="#" v-handle v-show="here.length > 1" class="reorder" :title="___('Order')">&updownarrow;</a>
+          <a href="#" @click.prevent="remove(index)" :title="___('Remove')">&times;</a>
         </div>
         <obj
-          :paths="path.schema"
+          :path="path.schema"
           :value="here[index]"
         />
       </sortable-item>
@@ -61,3 +59,10 @@ export default {
   directives: { handle: HandleDirective }
 }
 </script>
+
+<style lang="stylus">
+.controls a
+  display inline-block
+  padding 0 .4em
+  text-decoration none
+</style>

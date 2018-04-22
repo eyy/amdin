@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="save" :class="{ saving }">
     <obj
-      :paths="paths"
+      :path="paths"
       :value="doc"
       :errors="errors"
     />

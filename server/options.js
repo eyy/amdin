@@ -59,12 +59,12 @@ function getPaths (paths) {
 
     let opts = _.extend({}, path.options)
     opts.type = path.instance
-    opts.label = opts.label || _.capitalize(name)
+    opts.label = opts.label || _.capitalize(name.replace(/.*?\./, ''))
 
     if (path.$isMongooseArray)
       opts.schema = getPaths(path.schema.paths)
 
-    acc[name] = opts
+    _.set(acc, name, opts)
     return acc
   }, {})
 }
@@ -72,12 +72,13 @@ function getPaths (paths) {
 function preSave (doc, Model) {
   let deletePictures = []
 
-  for (let [ name, path ] of runPaths(Model.amdin.paths)) {
-    if (path.editable === false)
-      delete doc[ name ]
+  for (let [ path, opts ] of runPaths(Model.amdin.paths)) {
+    if (opts.editable === false)
+      _.unset(doc, path)
 
-    if (path.field === 'picture' && doc[ name ].length) {
-      doc[ name ] = doc[ name ].filter(pic => {
+    let data = _.get(doc, path)
+    if (opts.field === 'picture' && data && data.length) {
+      _.set(doc, path, data.filter(pic => {
         if (!pic || !pic.public_id)
           return false
 
@@ -86,8 +87,7 @@ function preSave (doc, Model) {
           return false
         }
         return true
-      })
-      console.log(doc[ name ])
+      }))
     }
   }
 
@@ -106,10 +106,10 @@ function * runPaths (paths, parent = '') {
     if (paths.hasOwnProperty(name) && !name.startsWith('_')) {
       let path = paths[ name ]
       if (path.$isMongooseArray)
-        for (let p of runPaths(path.schema.paths, parent ? parent + '.' + name : name))
+        for (let p of runPaths(path.schema.paths, name + '.'))
           yield p
       else
-        yield [ name, path, parent ]
+        yield [ parent + name, path ]
     }
 }
 
