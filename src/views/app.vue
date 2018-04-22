@@ -98,7 +98,7 @@ button, .button
   display inline-block
 
 #app
-  max-width 900px
+  max-width 1000px
   margin 0 auto
 
 .toasted-amdin

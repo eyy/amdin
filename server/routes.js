@@ -1,6 +1,6 @@
 const Router = require('koa-router'),
   body = require('koa-body'),
-  { models } = require('mongoose'),
+  mongoose = require('mongoose'),
   { preSave, registry } = require('./options')
   // upload = require('./upload')
 
@@ -12,20 +12,22 @@ const api = new Router
 
 api.get('/', ctx => {
   ctx.body = {
-    models: Object.keys(models)
-      .map(m => ({
+    models: Object.keys(mongoose.models).map(m => {
+      let opts = mongoose.models[ m ].amdin
+      return {
         name: m,
-        label: models[ m ].amdin.label,
-        plural: models[ m ].amdin.plural,
-        single: models[ m ].amdin.single
-      })),
+        label: opts.label,
+        plural: opts.plural,
+        single: opts.single
+      }
+    }),
     conf: registry
   }
 })
 
 // middleware: set ctx.Model
 api.use('/:model', async (ctx, next) => {
-  ctx.Model = models[ctx.params.model]
+  ctx.Model = mongoose.models[ctx.params.model]
   if (!ctx.Model)
     return ctx.throw(404, 'No model ' + ctx.params.model)
 
@@ -55,7 +57,7 @@ api.get('/:model', async ctx => {
     for (let doc of docs)
       for (let ref of opts.list_populate)
         if (doc[ref])
-          doc[ref] = doc[ref][ models[ref].amdin.title ]
+          doc[ref] = doc[ref][ mongoose.models[ref].amdin.title ]
 
   ctx.body = docs
 })
