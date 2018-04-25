@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "koa": "^2.5.0",
+    "koa-basic-auth": "^2.0.0",
     "koa-body": "^2.5.0",
     "koa-json-error": "^3.1.2",
     "koa-mount": "^3.0.0",

@@ -19,12 +19,19 @@ mongoose.connect('mongodb://localhost/amdin')
 
 const app = new Koa
 
-app.use(cors({ origin: 'http://localhost:8080' }))
 app.use(logger())
+app.use(cors({
+  origin: 'http://localhost:8080',
+  credentials: true
+}))
 
 app.use(admin({
   title: 'Amdin Example',
   // lang: 'he',
+  auth: {
+    name: 'admin',
+    pass: '123'
+  },
   cloudinary: {
     name: process.env.CLOUDINARY_CLOUDNAME,
     preset: process.env.CLOUDINARY_PRESET

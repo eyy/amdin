@@ -15,5 +15,3 @@
 - logo
 
 - validate errors within arrays
-
-- login

@@ -12,14 +12,17 @@ export default {
     ready: false
   }),
   async created () {
-    let { conf } = await start()
-    this.$setLang(conf.lang)
-    this.ready = true
-
     bus.$on('error', err => {
       this.$toasted.error(this.___('There was a problem :('))
       console.error(err)
     })
+
+    let { conf } = await start()
+    if (!conf)
+      return bus.$emit('error', 'No config.')
+
+    this.$setLang(conf.lang)
+    this.ready = true
   }
 }
 </script>

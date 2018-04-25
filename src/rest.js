@@ -8,9 +8,11 @@ export const root = process.env.NODE_ENV === 'development'
 export const bus = new Vue
 
 function go (path = '', opts = {}) {
+  opts.credentials = 'include'
   opts.headers = {
     'content-type': 'application/json'
   }
+
   return fetch(root + path, opts)
     .then(res => res.json())
     .then(res => {
