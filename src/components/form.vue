@@ -74,7 +74,7 @@ form
 
 input, select, textarea
   padding .5em
-  min-width 15em
+  min-width 25em
   box-sizing border-box
 
 input

@@ -7,7 +7,7 @@
     <div v-else>
       <input
         type="file"
-        :multiple="multiple"
+        :multiple="path.multiple"
         accept="image/*"
         style="display:none"
         @change="show"
@@ -15,7 +15,7 @@
         ref="input"
       />
       <button
-        v-if="multiple || !here.length && !files.length"
+        v-if="path.multiple || !value.length && !files.length"
         class="other"
         @click.prevent="$refs.input.click()"
       >
@@ -34,12 +34,13 @@
           <span>
             <a href="#" @click.prevent="files.splice(index, 1)" :title="___('Delete')">&times;</a>
           </span>
+          {{ ___(file.status) }}
         </div>
       </div>
 
       <sortable-list
         tag="ul"
-        v-if="here.length"
+        v-if="value.length"
         v-model="here"
         class="pictures"
         :use-drag-handle="true"
@@ -87,9 +88,6 @@ export default {
       set (val) {
         this.$emit('input', val)
       }
-    },
-    multiple () {
-      return this.path.multiple
     }
   },
   async created () {
@@ -102,7 +100,8 @@ export default {
       this.files = map(this.$refs.input.files, f => ({
         name: f.name,
         file: f,
-        blob: blob(f)
+        blob: blob(f),
+        status: ''
       })).concat(this.files)
     },
     del (index) {
@@ -115,9 +114,12 @@ export default {
         return
 
       let { name, preset } = this.conf
-      let file
 
-      while (file = this.files.pop()) { // eslint-disable-line
+      for (let i = 0; i < this.files.length; i++) {
+        let file = this.files[ i ]
+
+        file.status = '...'
+
         let data = new FormData()
         data.append('upload_preset', preset)
         data.append('file', file.file)
@@ -130,12 +132,15 @@ export default {
 
         if (res.error) {
           console.error('upload error', res.error)
+          file.status = 'Error'
         }
         else {
           console.log('picture uploaded', res)
-          this.$emit('input', [ res ].concat(this.here))
+          this.$emit('input', [ res ].concat(this.value))
+          file.status = 'Done'
         }
       }
+      this.files = this.files.filter(f => f.status === 'Error')
     },
     resize (url, h) {
       let tokens = url.split('/')
@@ -161,6 +166,9 @@ export default {
     position absolute
     left 0
     top 0
+    [dir=rtl] &
+      right 0
+      left auto
   a
     background white
     padding .2em
