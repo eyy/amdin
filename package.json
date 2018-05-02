@@ -83,5 +83,15 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
+  ],
+  "keywords": [
+    "admin",
+    "forms",
+    "vue",
+    "cms",
+    "mongodb",
+    "mongodb-admin",
+    "mongoose",
+    "mongoose-admin"
   ]
 }
