@@ -45,7 +45,7 @@ let Model = mongoose.model('test-transform', {
       un: { type: String, editable: false },
       pic: { type: Object, field: 'picture' }
     } ]
-  }],
+  }]
 
 })
 setModelOptions(mongoose.models)
@@ -187,7 +187,7 @@ test('transform: remove array[].object.pic', t => {
           pic: [
             { public_id: 'a' },
             { public_id: 'b' }
-          ],
+          ]
         },
         __deleted: true
       },
@@ -216,7 +216,7 @@ test('transform: remove array[].array[].pic', t => {
           pic: [
             { public_id: '4' },
             { public_id: '5' }
-          ],
+          ]
         } ],
         __deleted: true
       }

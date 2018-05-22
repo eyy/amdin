@@ -1,6 +1,6 @@
 {
   "name": "amdin",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "main": "server/index",
   "license": "Apache-2.0",
   "scripts": {
@@ -51,6 +51,11 @@
     "vue-template-compiler": "^2.5.13",
     "vue-toasted": "^1.1.24"
   },
+  "files": [
+    "dist/",
+    "lang/",
+    "server/"
+  ],
   "babel": {
     "presets": [
       "@vue/app"
