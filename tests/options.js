@@ -1,39 +1,98 @@
 const test = require('tape'),
   mongoose = require('mongoose'),
-  { setModelOptions, runPaths } = require('../server/options')
+  proxyquire = require('proxyquire'),
+  { transform, setModelOptions } = proxyquire('../server/options', {
+    cloudinary: { v2: { api: {
+      delete_resources(arr) {
+        console.log('deleted pictures', arr)
+      }
+    } } }
+  })
 
-mongoose.connect('mongodb://localhost/amdin-test')
-let Model = mongoose.model('test-options', {
-  a: String,
-  b: [{
-    a: String
+let Model = mongoose.model('test-transform', {
+  str: String,
+  un: { type: String, editable: false },
+  obj: {
+    un: { type: String, editable: false },
+    arr: [ {
+      str: String,
+      un: { type: String, editable: false }
+    } ]
+  },
+  arr: [{
+    str: String,
+    un: { type: String, editable: false },
+    obj: {
+      str: String
+    },
+    arr: [ {
+      un: { type: String, editable: false }
+    } ]
   }],
-  c: [{
-    a: [{
-      a: String
-    }]
-  }],
-  d: {
-    a: String,
-    b: [{
-      a: String
-    }]
+  pic: { type: Object, field: 'picture' }
+})
+setModelOptions(mongoose.models)
+
+test('transform: remove editable=false', t => {
+  let doc = {
+    un: 'no',
+    arr: [
+      { str: '1', un: 'no' },
+      { str: '2' }
+    ]
   }
+  let tr = transform(doc, Model)
+
+  t.deepEqual(tr, {
+    arr: [
+      { str: '1' },
+      { str: '2' }
+    ]
+  })
+  t.end()
 })
 
-setModelOptions()
+test('transform: array within array', t => {
+  let doc = {
+    arr: [
+      {
+        arr: [
+          { str: 1, un: 'no' },
+          { str: 2 }
+        ]
+      }
+    ]
+  }
+  let tr = transform(doc, Model)
 
-test('runPaths', t => {
-  let paths = []
-  for (let [ name, , parent ] of runPaths(Model.schema.paths))
-    paths.push([ name, parent ])
+  t.deepEqual(tr, {
+    arr: [
+      {
+        arr: [
+          { str: 1 },
+          { str: 2 }
+        ]
+      }
+    ]
+  })
+  t.end()
+})
 
-  t.equal(paths, [
-    [ 'a', '' ],
-    [ 'a', 'b' ],
-    [ 'a', 'c.a' ],
-    [ 'd.a', '' ],
-    [ 'a', 'd.b' ]
-  ])
+test('transform: remove pictures', t => {
+  let doc = {
+    pic: [
+      { public_id: 'asd' },
+      null,
+      {},
+      { public_id: '234', deleted: true }
+    ]
+  }
+  let tr = transform(doc, Model)
+
+  t.deepEqual(tr, {
+    pic: [
+      { public_id: 'asd' }
+    ]
+  })
   t.end()
 })

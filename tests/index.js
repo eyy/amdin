@@ -8,7 +8,7 @@ let Model = mongoose.model('test', {
   name: { type: String, editable: false }
 })
 
-setModelOptions()
+setModelOptions(mongoose.models)
 
 test('model list', t => {
   let ctx = {}

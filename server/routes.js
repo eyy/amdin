@@ -1,7 +1,7 @@
 const Router = require('koa-router'),
   body = require('koa-body'),
   mongoose = require('mongoose'),
-  { preSave, registry } = require('./options')
+  { transform, registry } = require('./options')
   // upload = require('./upload')
 
 const router = module.exports = new Router
@@ -90,7 +90,7 @@ api.get('/:model/actions/:index/:id', async ctx => {
 // create a new doc
 api.post('/:model', body(), async ctx => {
   ctx.body = await ctx.Model.create(
-    preSave(ctx.request.body, ctx.Model)
+    transform(ctx.request.body, ctx.Model)
   )
 })
 
@@ -130,7 +130,7 @@ api.put('/:model/:id', body(), async ctx => {
   if (!ctx.Model.amdin.single)
     ctx.body = await ctx.Model.findByIdAndUpdate(
       ctx.params.id,
-      preSave(ctx.request.body, ctx.Model),
+      transform(ctx.request.body, ctx.Model),
       {
         'new': true,
         runValidators: true
@@ -139,7 +139,7 @@ api.put('/:model/:id', body(), async ctx => {
   else
     ctx.body = await ctx.Model.findOneAndUpdate(
       {},
-      preSave(ctx.request.body, ctx.Model),
+      transform(ctx.request.body, ctx.Model),
       {
         'new': true,
         runValidators: true,
@@ -151,6 +151,8 @@ api.put('/:model/:id', body(), async ctx => {
 
 // delete document
 api.delete('/:model/:id', async ctx => {
+  let doc = await ctx.Model.findById(ctx.params.id)
+  transform(doc, ctx.Model)
   await ctx.Model.findByIdAndRemove(ctx.params.id)
   ctx.body = { ok: true }
 })

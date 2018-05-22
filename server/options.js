@@ -1,6 +1,5 @@
 const _ = require('lodash'),
   debug = require('debug')('amdin'),
-  mongoose = require('mongoose'),
   cloudinary = require('cloudinary')
 
 // init model options
@@ -20,17 +19,14 @@ const _ = require('lodash'),
  */
 
 exports.setModelOptions = setModelOptions
-exports.preSave = preSave
-exports.runPaths = runPaths
+exports.transform = transform
 exports.registry = {}
 
-function setModelOptions () {
-  let { models } = mongoose
-
+function setModelOptions (models) {
   for (let name in models)
     if (models.hasOwnProperty(name)) {
       let Model = models[name],
-        paths = Model.schema.paths,
+        { paths } = Model.schema,
         opts = Model.amdin = Model.amdin || {}
 
       opts.single = opts.single || false
@@ -69,16 +65,33 @@ function getPaths (paths) {
   }, {})
 }
 
-function preSave (doc, Model) {
+function run (paths, doc, fn) {
+  for (let name in paths)
+    if (paths.hasOwnProperty(name) && !name.startsWith('_')) {
+      // console.log(name)
+      let path = paths[ name ]
+
+      if (path.$isMongooseArray) {
+        let arr = _.get(doc, name)
+        if (arr && arr.length)
+          arr.forEach(d => run(path.schema.paths, d, fn))
+        continue
+      }
+
+      fn(name, path.options, doc)
+    }
+}
+
+function transform (doc, Model) {
   let deletePictures = []
 
-  for (let [ path, opts ] of runPaths(Model.amdin.paths)) {
+  run(Model.schema.paths, doc, function (name, opts, doc) {
     if (opts.editable === false)
-      _.unset(doc, path)
+      _.unset(doc, name)
 
-    let data = _.get(doc, path)
+    let data = _.get(doc, name)
     if (opts.field === 'picture' && data && data.length) {
-      _.set(doc, path, data.filter(pic => {
+      _.set(doc, name, data.filter(pic => {
         if (!pic || !pic.public_id)
           return false
 
@@ -89,7 +102,7 @@ function preSave (doc, Model) {
         return true
       }))
     }
-  }
+  })
 
   if (deletePictures.length)
     cloudinary.v2.api.delete_resources(deletePictures, function (err) {
@@ -100,34 +113,3 @@ function preSave (doc, Model) {
 
   return doc
 }
-
-function * runPaths (paths, parent = '') {
-  for (let name in paths)
-    if (paths.hasOwnProperty(name) && !name.startsWith('_')) {
-      let path = paths[ name ]
-      if (path.$isMongooseArray)
-        for (let p of runPaths(path.schema.paths, name + '.'))
-          yield p
-      else
-        yield [ parent + name, path ]
-    }
-}
-
-if (!module.parent) (async () => {
-  let paths = {
-    a: 'String',
-    b: 'String',
-    c: {
-      $isMongooseArray: true,
-      schema: {
-        paths: {
-          a: 'String',
-          b: 'String'
-        }
-      }
-    }
-  }
-
-  for (let p of runPaths(paths))
-    console.log(p)
-})()

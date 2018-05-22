@@ -5,10 +5,11 @@ const Koa = require('koa'),
   auth = require('koa-basic-auth'),
   path = require('path'),
   routes = require('./routes'),
+  mongoose = require('mongoose'),
   { setModelOptions, registry } = require('./options')
 
 module.exports = function init (options = {}) {
-  setModelOptions()
+  setModelOptions(mongoose.models)
 
   registry.lang = options.lang
     ? require('../lang/' + options.lang)
