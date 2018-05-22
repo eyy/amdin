@@ -54,8 +54,8 @@
         >
           <img v-if="file.url" :src="resize(file.url, 120)"/>
           <span>
-            <a href="#" v-handle :title="___('Order')" v-show="here.length > 1">&updownarrow;</a>
-            <a href="#" @click.prevent="del(index)" class="reorder" :title="___('Delete')">&times;</a>
+            <a href="#" v-handle :title="___('Order')" class="sort" v-show="here.length > 1">&updownarrow;</a>
+            <a href="#" @click.prevent="del(index)" :title="___('Delete')">&times;</a>
           </span>
         </sortable-item>
       </sortable-list>
@@ -162,6 +162,10 @@ export default {
   position relative
   marign-end .5em
   list-style none
+  img
+    min-height 100px
+    min-width 100px
+    background #dfdfdf
   span
     position absolute
     left 0
@@ -173,6 +177,9 @@ export default {
     background white
     padding .2em
     text-decoration none
+    &.sort
+      user-select none
+      cursor move
   &.deleted
     img
       filter grayscale(1) blur(2px)

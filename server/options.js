@@ -65,37 +65,40 @@ function getPaths (paths) {
   }, {})
 }
 
-function run (paths, doc, fn) {
+function run (paths, doc, deleted, fn) {
   for (let name in paths)
     if (paths.hasOwnProperty(name) && !name.startsWith('_')) {
-      // console.log(name)
       let path = paths[ name ]
 
       if (path.$isMongooseArray) {
         let arr = _.get(doc, name)
         if (arr && arr.length)
-          arr.forEach(d => run(path.schema.paths, d, fn))
+          _.set(doc, name, arr.filter(d => {
+            run(path.schema.paths, d, deleted || d.__deleted, fn)
+            return !d.__deleted
+          }))
         continue
       }
 
-      fn(name, path.options, doc)
+      fn(name, path.options, doc, deleted)
     }
 }
 
-function transform (doc, Model) {
+function transform (doc, Model, deleted = false) {
   let deletePictures = []
 
-  run(Model.schema.paths, doc, function (name, opts, doc) {
+  run(Model.schema.paths, doc, deleted, function (name, opts, doc, deleted) {
     if (opts.editable === false)
       _.unset(doc, name)
 
     let data = _.get(doc, name)
     if (opts.field === 'picture' && data && data.length) {
       _.set(doc, name, data.filter(pic => {
+        // console.log('pic', aboveDeleted, pic)
         if (!pic || !pic.public_id)
           return false
 
-        if (pic.deleted) {
+        if (pic.deleted || deleted) {
           deletePictures.push(pic.public_id)
           return false
         }

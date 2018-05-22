@@ -152,7 +152,7 @@ api.put('/:model/:id', body(), async ctx => {
 // delete document
 api.delete('/:model/:id', async ctx => {
   let doc = await ctx.Model.findById(ctx.params.id)
-  transform(doc, ctx.Model)
+  transform(doc, ctx.Model, true)
   await ctx.Model.findByIdAndRemove(ctx.params.id)
   ctx.body = { ok: true }
 })

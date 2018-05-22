@@ -1,9 +1,8 @@
-export function emptyDoc (paths) {
-  let acc = {}
+export function emptyDoc (paths, doc = {}) {
   for (let n in paths)
     if (paths.hasOwnProperty(n))
-      acc[ n ] = empty(paths[ n ])
-  return acc
+      doc[ n ] = empty(paths[ n ])
+  return doc
 }
 
 function empty (path) {
@@ -16,10 +15,13 @@ function empty (path) {
   if (path.schema)
     return []
 
-  let type = path.type.toLowerCase()
+  let field = path.field || (path.type || 'obj').toLowerCase()
 
-  if (type === 'number')
+  if (field === 'number')
     return path.min ? path.min : 0
+
+  if (field === 'picture')
+    return []
 
   return null
 }

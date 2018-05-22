@@ -13,11 +13,12 @@
         v-for="(doc, index) in here"
         :index="index"
         :key="doc._id"
-        class="box"
+        :class="{ box: true, delete: doc.__deleted }"
       >
         <div class="box-controls">
+          {{ doc.__deleted ? ___('Deleted') : '' }}
           <a href="#" v-handle v-show="here.length > 1" class="reorder" :title="___('Order')">&updownarrow;</a>
-          <a href="#" @click.prevent="remove(index)" :title="___('Remove')">&times;</a>
+          <a href="#" @click.prevent="remove(doc)" :title="___('Remove')">&times;</a>
         </div>
         <obj
           :path="path.schema"
@@ -34,7 +35,7 @@ import { emptyDoc } from '../common'
 
 export default {
   props: {
-    value: { type: Array, 'default': () => [] },
+    value: Array,
     path: Object
   },
   computed: {
@@ -49,10 +50,10 @@ export default {
   },
   methods: {
     add () {
-      this.here = [ emptyDoc(this.path.schema) ].concat(this.value)
+      this.here = [ emptyDoc(this.path.schema, { __deleted: false }) ].concat(this.value)
     },
-    remove (index) {
-      this.value.splice(index, 1)
+    remove (doc) {
+      this.$set(doc, '__deleted', !doc.__deleted)
     }
   },
   components: { SortableList, SortableItem },
@@ -65,4 +66,9 @@ export default {
   display inline-block
   padding 0 .4em
   text-decoration none
+.box.delete
+  //filter grayscale(1) blur(2px)
+  opacity .5
+  > table
+    display none
 </style>
