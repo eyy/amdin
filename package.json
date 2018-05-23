@@ -9,7 +9,9 @@
     "vue": "vue-cli-service serve --open",
     "build": "npm run lint && NODE_ENV=production vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "tape tests"
+    "test": "tape tests",
+    "version": "npm run build && git add -A dist",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
@@ -43,7 +45,6 @@
     "proxyquire": "^2.0.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
-    "supertest": "^3.1.0",
     "tape": "^4.9.0",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",

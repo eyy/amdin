@@ -155,12 +155,12 @@ export default {
 
 <style lang="stylus">
 .pictures
-  margin .5em 0 0
+  margin-top .5em
   user-select none
-  padding-left 0
+  padding 0
 .picture
   position relative
-  marign-end .5em
+  /*margin 0 .5em*/
   list-style none
   img
     min-height 100px
