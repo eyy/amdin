@@ -1,62 +1,53 @@
 {
   "name": "amdin",
   "version": "0.4.0",
-  "main": "server/index",
-  "license": "Apache-2.0",
   "scripts": {
+    "build": "npm run lint && NODE_ENV=production vue-cli-service build",
+    "test": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint",
     "start": "npm run koa & npm run vue",
     "koa": "DEBUG=amdin cd example/complex && nodemon index",
     "vue": "vue-cli-service serve --open",
-    "build": "npm run lint && NODE_ENV=production vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "test": "tape tests",
-    "version": "npm run build && git add -A dist",
-    "postversion": "git push && git push --tags"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/eyy/amdin.git"
-  },
-  "peerDependencies": {
-    "mongoose": "^5.0.11"
+    "test:tape": "tape tests",
+    "version": "npm run build",
+    "postversion": "git push && git push --tags",
+    "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
     "koa": "^2.5.1",
     "koa-basic-auth": "^2.0.0",
-    "koa-body": "^2.5.0",
+    "koa-body": "^2.6.0",
     "koa-json-error": "^3.1.2",
     "koa-mount": "^3.0.0",
     "koa-router": "^7.4.0",
-    "koa-static": "^4.0.2",
+    "koa-static": "^4.0.3",
     "lodash": "^4.17.10"
   },
   "devDependencies": {
     "@koa/cors": "^2.2.1",
-    "@vue/cli-plugin-babel": "^3.0.0-beta.10",
-    "@vue/cli-plugin-eslint": "^3.0.0-beta.10",
-    "@vue/cli-service": "^3.0.0-beta.10",
-    "@vue/eslint-config-standard": "^3.0.0-beta.10",
+    "@vue/cli-plugin-babel": "^3.0.0-beta.11",
+    "@vue/cli-plugin-eslint": "^3.0.0-beta.11",
+    "@vue/cli-plugin-unit-jest": "^3.0.0-beta.11",
+    "@vue/cli-service": "^3.0.0-beta.11",
+    "@vue/eslint-config-standard": "^3.0.0-beta.11",
     "@vue/test-utils": "^1.0.0-beta.16",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^22.4.3",
     "cloudinary": "^1.11.0",
     "dotenv": "^5.0.1",
     "eslint": "^4.19.1",
     "koa-logger": "^3.2.0",
-    "mongoose": "^5.1.1",
+    "mongoose": "^5.1.2",
     "proxyquire": "^2.0.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "tape": "^4.9.0",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",
-    "vue-slicksort": "^0.1.6",
+    "vue-slicksort": "^0.1.8",
     "vue-template-compiler": "^2.5.13",
     "vue-toasted": "^1.1.24"
   },
-  "files": [
-    "dist/",
-    "lang/",
-    "server/"
-  ],
   "babel": {
     "presets": [
       "@vue/app"
@@ -79,9 +70,6 @@
       ]
     }
   },
-  "eslintIgnore": [
-    "dist/"
-  ],
   "postcss": {
     "plugins": {
       "autoprefixer": {}
@@ -92,6 +80,23 @@
     "last 2 versions",
     "not ie <= 8"
   ],
+  "files": [
+    "dist/",
+    "lang/",
+    "server/"
+  ],
+  "peerDependencies": {
+    "mongoose": "^5.0.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eyy/amdin.git"
+  },
+  "eslintIgnore": [
+    "dist/"
+  ],
+  "license": "Apache-2.0",
+  "main": "server/index",
   "keywords": [
     "admin",
     "forms",
