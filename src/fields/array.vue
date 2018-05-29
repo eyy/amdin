@@ -23,6 +23,7 @@
         <obj
           :path="path.schema"
           :value="here[index]"
+          :errors="errors[index]"
         />
       </sortable-item>
     </sortable-list>
@@ -36,7 +37,8 @@ import { emptyDoc } from '../common'
 export default {
   props: {
     value: Array,
-    path: Object
+    path: Object,
+    errors: { type: Object, default: () => ({}) }
   },
   computed: {
     here: {

@@ -12,6 +12,4 @@
 
 - logo
 
-- validate errors within arrays
-
 - bug: linking to the same view

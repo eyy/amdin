@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { transform, set } from 'lodash'
+
 export default {
   props: {
     doc: Object,
@@ -54,7 +56,7 @@ export default {
       this.saving = false
 
       if (res.status === 500 && res.name === 'ValidationError') {
-        this.errors = res.errors
+        this.errors = transform(res.errors, (acc, val, key) => set(acc, key, val))
         console.error('submit error', res)
         this.$toasted.error(___('There was a problem :('))
       }

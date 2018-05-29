@@ -13,8 +13,9 @@
           :is="matchField(p)"
           :path="p"
           v-model="value[name]"
+          :errors="errors[name]"
         />
-        <span class="error" v-if="errors[name]">
+        <span class="error" v-if="errors[name] && errors[name].$isValidatorError">
           {{ errors[name].message }}
         </span>
       </td>
