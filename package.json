@@ -1,6 +1,6 @@
 {
   "name": "amdin",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "scripts": {
     "build": "npm run lint && NODE_ENV=production vue-cli-service build",
     "test": "vue-cli-service test:unit",
